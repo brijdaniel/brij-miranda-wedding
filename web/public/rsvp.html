@@ -1,0 +1,31 @@
+<html>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+<script src="./init.js"></script>
+
+<body>
+    <h1>Guests</h1>
+    <ul id="guest-list">
+    </ul>
+</body>
+
+<script>
+    async function InitRsvp(id) {
+        try {
+            const res = await DB.collection('guests').doc(id).get();
+            if (res.exists) {
+                console.log('EXISTS', {res});
+            } else {
+                console.error('DOESNT EXIST', {res});
+            }            
+        } catch (error) {
+            console.error('ERROR HERE', error);
+        }
+    };
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const currentId = params.id;
+    InitRsvp(currentId);
+    console.log('This is last');
+</script>
+</html>
