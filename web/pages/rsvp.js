@@ -1,4 +1,3 @@
-import styles from '../styles/Home.module.css'
 import React from 'react';
 import { DB } from '../utils/init-firebase';
 
@@ -32,7 +31,7 @@ export default function Page() {
     }
 
     return (
-        <div className={styles.main} >
+        <div>
             <h1>RSVP</h1>
             <h2>Name: {guestDoc && guestDoc.first_name}</h2>
             <h2>Images: (Coming Soon)</h2>
