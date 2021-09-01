@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonToggleField, SelectField, TextAreaField } from '../shared/fields';
+import { LoadingScreen } from '../shared/loading-screen';
 import { DB } from '../utils/init-firebase';
 
 export default function Page() {
@@ -34,7 +35,7 @@ export default function Page() {
     }
 
     if (status === 'loading') {
-        return <h1>Loading</h1>
+        return <LoadingScreen label="Finding guest information" />
     }
     if (status !== 'loaded' || !guestDoc) {
         return <h1>Guest '{guestId}' Not Found</h1>

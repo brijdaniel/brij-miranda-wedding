@@ -51,14 +51,14 @@ export function ButtonToggleField({ label, options, onChange }) {
     const [selected, setSelected] = React.useState();
     React.useEffect(() => onChange(selected), [selected]);
 
-    return <div className="form-control">
+    return <div className="form-control w-full">
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <div className="btn-group">
+        <div className="btn-group w-full">
             {options.map((o, i) => (<button
                 key={i}
-                className={'btn btn-outline btn-lg ' + (o.value === selected ? 'btn-active' : '')}
+                className={('w-1/' + options.length) + ' btn btn-outline btn-lg ' + (o.value === selected ? 'btn-active' : '')}
                 onClick={() => setSelected(o.value)} 
                 value={o.value}
             >
@@ -72,11 +72,11 @@ export function ButtonToggleField({ label, options, onChange }) {
 }
 
 export function SelectField({ label, options, onChange }) {
-    return <div className="form-control">
+    return <div className="form-control w-full">
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <select onChange={e => onChange(e.currentTarget.value)} className="select select-bordered select-lg w-full max-w-xs">
+        <select onChange={e => onChange(e.currentTarget.value)} className="select select-bordered select-lg w-full">
             {options.map((o, i) => (<option key={i} value={o.value}>{o.label}</option>))}
         </select>
     </div>;
