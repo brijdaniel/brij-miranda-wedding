@@ -61,7 +61,12 @@ export function ButtonToggleField({ label, options, onChange }) {
                 className={'btn btn-outline btn-lg ' + (o.value === selected ? 'btn-active' : '')}
                 onClick={() => setSelected(o.value)} 
                 value={o.value}
-            >{o.label}</button>))}
+            >
+                <div className="flex flex-col items-center">
+                    <p className="">{o.label}</p>
+                    <p className="text-xs">{o.subLabel}</p>
+                </div>
+            </button>))}
         </div>
     </div>;
 }

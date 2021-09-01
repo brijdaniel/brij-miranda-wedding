@@ -60,8 +60,8 @@ const dietaryOptions = [
 ]
 
 const areYouComingOptions = [
-    { label: 'Yes', value: 'yes' },
-    { label: 'Sorry No', value: 'no' },
+    { label: 'Yes', subLabel: 'I\'d Love to Attend', value: 'yes' },
+    { label: 'Sorry', subLabel: 'I can\'t make it', value: 'no' },
 ]
 
 function RsvpStateless({ firstName, lastName, address, onSubmit }) {
@@ -106,7 +106,7 @@ function RsvpStateless({ firstName, lastName, address, onSubmit }) {
                     <h2 className="mt-3">We're sorry to hear that, look forward to seeing you soon :)</h2>
                 </>}
             </div>
-            <button disabled={!areYouComingResult} onClick={onClickedSubmit} className="my-3 btn btn-primary">Send</button>
+            <button disabled={!areYouComingResult} onClick={onClickedSubmit} className="my-3 btn btn-primary">Send Response</button>
         </div>
     </div>
 }
