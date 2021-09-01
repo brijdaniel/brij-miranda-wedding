@@ -4,13 +4,7 @@ import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
 import { LoginWrapper } from '../../shared/login-wrapper';
 
-export default function Wrapped() {
-    return <LoginWrapper>
-        <Page />
-    </LoginWrapper>
-}
-
-function Page() {
+export default function Page() {
     const [guests, setGuests] = React.useState(null);
 
     React.useEffect(() => {
