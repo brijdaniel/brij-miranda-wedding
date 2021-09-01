@@ -34,9 +34,9 @@ export default function Page() {
                 <TextField label="First Name" onChange={setFirstName} />
                 <TextField label="Last Name" onChange={setLastName} />
                 <TextAreaField label="Address" onChange={setAddress} />
-            </div>}
 
-            <button disabled={shouldDisable} type="button" onClick={onSubmit} className="btn btn-primary mt-5">Add Guest</button>
+                <button disabled={shouldDisable} type="button" onClick={onSubmit} className="btn btn-primary mt-5">Add Guest</button>
+            </div>}
         </div>
     )
 }

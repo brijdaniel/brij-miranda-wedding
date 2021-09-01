@@ -98,7 +98,7 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
     }
 
     return <div className="w-full min-h-screen bg-base-200">
-        <div className="mx-auto max-w-md flex flex-col align-center text-center">
+        <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
             <p className="text-3xl font-bold my-4">RSVP</p>
             <p className="text-5xl">Dear {firstName} {lastName}</p>
             <p className="mb-5">You've been invited to the wedding of Brij and Miranda Daniel</p>

@@ -64,7 +64,7 @@ export function ButtonToggleField({ label, options, onChange }) {
             >
                 <div className="flex flex-col items-center">
                     <p className="">{o.label}</p>
-                    <p className="text-xs">{o.subLabel}</p>
+                    <p className="text-xs -mx-6">{o.subLabel}</p>
                 </div>
             </button>))}
         </div>
