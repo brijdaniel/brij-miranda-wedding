@@ -80,7 +80,7 @@ function ToolTip({ label, children }) {
 
 function SvgBase({ label, children }) {
     return <ToolTip label={label}>
-        <svg id="i-minus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
             {children}
         </svg>
     </ToolTip>;
@@ -100,16 +100,16 @@ function ResponseIcon({ isGoing }) {
 
 function LinkButton({ id }) {
     return <a title="RSVP Link" href={"/rsvp?id=" + id} className="btn btn-circle btn-xs md:btn-sm lg:btn-md xl:btn-lg">
-        <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <SvgBase>
             <path d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15" />
-        </svg>
+        </SvgBase>
     </a>
 }
 
 function DeleteButton({ onClick }) {
     return <button onClick={onClick} className="btn btn-circle btn-xs md:btn-sm lg:btn-md xl:btn-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current md:w-6 md:h-6">
+        <SvgBase>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
+        </SvgBase>
     </button>
 }
