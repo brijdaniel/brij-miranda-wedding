@@ -77,7 +77,7 @@ function ToolTip({ label, children }) {
 
 function SvgBase({ label, children }) {
     return <ToolTip label={label}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
             {children}
         </svg>
     </ToolTip>;
@@ -96,17 +96,19 @@ function ResponseIcon({ isGoing }) {
 }
 
 function LinkButton({ id }) {
-    return <Link href={"/rsvp?id=" + id}><a className="btn btn-circle btn-md">
+    return <ToolTip label="View Guest Link"><Link href={"/rsvp?id=" + id}><a className="btn btn-circle btn-md">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-            <path d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15" />
+            <circle cx="17" cy="15" r="1" />
+            <circle cx="16" cy="16" r="6" />
+            <path d="M2 16 C2 16 7 6 16 6 25 6 30 16 30 16 30 16 25 26 16 26 7 26 2 16 2 16 Z" />
         </svg>
-    </a></Link>;
+    </a></Link></ToolTip>;
 }
 
 function EditButton({ id }) {
-    return <Link href={"/guests/edit?id=" + id}><a className="btn btn-circle btn-md">
+    return <ToolTip label="Edit Guest"><Link href={"/guests/edit?id=" + id}><a className="btn btn-circle btn-md">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" width="24" height="24" className="inline-block w-4 h-4 stroke-current md:w-6 md:h-6">
             <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
         </svg>
-    </a></Link>;
+    </a></Link></ToolTip>;
 }
