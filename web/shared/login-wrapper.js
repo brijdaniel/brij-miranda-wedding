@@ -22,5 +22,18 @@ export function LoginWrapper(props) {
         </>
     }
 
-    return <h1>Error: {status} <LoginForm /></h1>
+    return <ErrorScreen status={status} >
+        <LoginForm />
+    </ErrorScreen>
+}
+
+function ErrorScreen({status, children}) {
+    return <div className="hero min-h-screen bg-base-200">
+        <div className="text-center hero-content">
+            <div className="max-w-md">
+                <h1 className="mb-5 text-5xl font-bold">Error: {status}</h1>
+                <div>{children}</div>
+            </div>
+        </div>
+    </div>
 }
