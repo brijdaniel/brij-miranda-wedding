@@ -2,17 +2,38 @@ import React from 'react';
 import Link from 'next/link';
 import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
-import { LoginWrapper } from '../../shared/login-wrapper';
 
 export default function Page() {
     const [guests, setGuests] = React.useState(null);
+    const [responses, setResponses] = React.useState({});
 
     React.useEffect(() => {
         DB.collection('guests').get()
             .then(res => res.docs.map(d => ({ ...d.data(), id: d.id })))
-            .then(docData => setGuests(docData))
+            .then(dataArr => setGuests(dataArr))
             .catch((err) => console.error(err))
     }, []);
+
+    React.useEffect(() => {
+        if (!guests) {
+            return;
+        }
+        async function FetchResponses() {
+            const res = await DB.collection('guest-responses').get()
+            const dataArr = res.docs.map(d => ({ ...d.data(), id: d.id }));
+            const dataObj = dataArr.reduce((a, c) => {
+                a[c.id] = !!c.is_coming;
+                return a;
+            }, {});
+            const responsesObj = guests.reduce((a, c) => {
+                a[c.id] = dataObj[c.id];
+                return a;
+            }, {});
+            setResponses(responsesObj);
+            console.log({ responsesObj });
+        }
+        FetchResponses().catch((err) => console.error(err));
+    }, [guests]);
 
     const onDelete = async (guest) => {
         await DB.collection('guests').doc(guest.id).delete();
@@ -30,6 +51,7 @@ export default function Page() {
                         <th>Last Name</th>
                         <th>Address</th>
                         <th>ID</th>
+                        <th>Responded?</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +62,7 @@ export default function Page() {
                                 <th>{guest.last_name || '-'}</th>
                                 <th>{guest.address || '-'}</th>
                                 <th className="text-gray-300">{guest.id || '-'}</th>
+                                <th><ResponseIcon isGoing={(responses[guest.id])} /></th>
                                 <th><LinkButton id={guest.id}></LinkButton></th>
                                 <th><DeleteButton onClick={() => onDelete(guest)}></DeleteButton></th>
                             </tr>
@@ -49,6 +72,30 @@ export default function Page() {
             </table>
         </div>
     )
+}
+
+function ToolTip({ label, children }) {
+    return <div data-tip={label} className="tooltip">{children}</div>
+}
+
+function SvgBase({ label, children }) {
+    return <ToolTip label={label}>
+        <svg id="i-minus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+            {children}
+        </svg>
+    </ToolTip>;
+}
+
+function ResponseIcon({ isGoing }) {
+    const noResponseYet = isGoing == null;
+    if (noResponseYet) {
+        return <SvgBase label="Hasn't responded yet"><path d="M2 16 L30 16" /></SvgBase>;
+    }
+    if (isGoing) {
+        return <SvgBase label="Responded 'going'"><path d="M2 20 L12 28 30 4" /></SvgBase>;
+    } else {
+        return <SvgBase label="Responded 'cant make it'"><path d="M2 30 L30 2 M30 30 L2 2" /></SvgBase>;
+    }
 }
 
 function LinkButton({ id }) {
