@@ -2,6 +2,7 @@ import React from 'react';
 import { ButtonToggleField, SelectField, TextAreaField } from '../shared/fields';
 import { LoadingScreen } from '../shared/loading-screen';
 import { DB } from '../utils/init-firebase';
+import { toDataURL } from 'qrcode'
 
 export default function Page() {
     const [guestDoc, setGuestDoc] = React.useState();
@@ -43,6 +44,7 @@ export default function Page() {
 
     return (
         <RsvpStateless
+            guestId={guestId}
             firstName={guestDoc.first_name}
             lastName={guestDoc.last_name}
             address={guestDoc.address}
@@ -65,13 +67,25 @@ const areYouComingOptions = [
     { label: 'Sorry', subLabel: 'I can\'t make it', value: 'no' },
 ]
 
-function RsvpStateless({ firstName, lastName, address, onSubmit }) {
+function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
+    const [qrImgUrl, setQrImgUrl] = React.useState('none');
+
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
     const [areYouComingResult, setAreYouComingResult] = React.useState('');
     const isComing = areYouComingResult === 'yes';
     const notComing = areYouComingResult === 'no';
     const isDietNone = dietOption === 'none';
+
+    React.useEffect(() => {
+        if (!guestId || guestId == 'loading') {
+            return;
+        }
+        const rsvpUrl = `${location.origin}/rsvp?id=${guestId}`
+        toDataURL(rsvpUrl, function (err, dataUrl) {
+            setQrImgUrl(dataUrl);
+        });
+    }, [guestId])
 
     const onClickedSubmit = () => {
         const resultObj = {
@@ -108,6 +122,10 @@ function RsvpStateless({ firstName, lastName, address, onSubmit }) {
                 </>}
             </div>
             <button disabled={!areYouComingResult} onClick={onClickedSubmit} className="my-3 btn btn-primary">Send Response</button>
+            {qrImgUrl && <div className="items-center flex flex-col max-w-full">
+                <h4 className="mt-3 -mb-5 z-10">Guest QR Code</h4>
+                <img width={200} src={qrImgUrl} />
+            </div>}
         </div>
     </div>
 }
