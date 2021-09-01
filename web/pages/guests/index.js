@@ -1,69 +1,60 @@
 import React from 'react';
 import Link from 'next/link';
-import { GetLoggedInUser, DB } from '../../utils/init-firebase';
+import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
-import { LoginForm } from '../../shared/login-form';
+import { LoginWrapper } from '../../shared/login-wrapper';
 
-export default function Page() {
+export default function Wrapped() {
+    return <LoginWrapper>
+        <Page />
+    </LoginWrapper>
+}
+
+function Page() {
     const [guests, setGuests] = React.useState(null);
-    const [status, setStatus] = React.useState('loading');
 
     React.useEffect(() => {
-        GetLoggedInUser()
-            .then((u) => setStatus(!!u ? 'logged-in' : 'not logged in!'))
-            .catch(err => setStatus(err.toString()) && console.error(err))
+        DB.collection('guests').get()
+            .then(res => res.docs.map(d => ({ ...d.data(), id: d.id })))
+            .then(docData => setGuests(docData))
+            .catch((err) => console.error(err))
     }, []);
-
-    React.useEffect(() => {
-        if (status == 'logged-in') {
-            DB.collection('guests').get()
-                .then(res => res.docs.map(d => ({ ...d.data(), id: d.id })))
-                .then(docData => setGuests(docData));
-        }
-    }, [status]);
 
     const onDelete = async (guest) => {
         await DB.collection('guests').doc(guest.id).delete();
         location.reload();
     }
 
-    if (status === 'loading') {
-        return <h1>Loading</h1>
-    }
-
-    if (status === 'logged-in') {
-        return (
-            <div className="container mx-auto">
-                <Header links={[{ label: 'Guests', href: '/guests' }]}></Header>
-                <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Guest</a></Link>
-                <table className="table w-full table-compact mt-4">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Address</th>
-                            <th>ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            guests && guests.map((guest, i) => {
-                                return <tr key={i}>
-                                    <th>{guest.first_name || '-'}</th>
-                                    <th>{guest.last_name || '-'}</th>
-                                    <th>{guest.address || '-'}</th>
-                                    <th className="text-gray-300">{guest.id || '-'}</th>
-                                    <th><LinkButton id={guest.id}></LinkButton></th>
-                                    <th><DeleteButton onClick={() => onDelete(guest)}></DeleteButton></th>
-                                </tr>
-                            })
-                        }
-                    </tbody>
-                </table>
-            </div>
-        )
-    };
-    return <div><h1>Error: {status}</h1> <LoginForm /></div>
+    return (
+        <div className="container mx-auto">
+            <Header links={[{ label: 'Guests', href: '/guests' }]}></Header>
+            <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Guest</a></Link>
+            <table className="table w-full table-compact mt-4">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        guests && guests.map((guest, i) => {
+                            return <tr key={i}>
+                                <th>{guest.first_name || '-'}</th>
+                                <th>{guest.last_name || '-'}</th>
+                                <th>{guest.address || '-'}</th>
+                                <th className="text-gray-300">{guest.id || '-'}</th>
+                                <th><LinkButton id={guest.id}></LinkButton></th>
+                                <th><DeleteButton onClick={() => onDelete(guest)}></DeleteButton></th>
+                            </tr>
+                        })
+                    }
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 function LinkButton({ id }) {
