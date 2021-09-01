@@ -1,13 +1,15 @@
 import React from 'react';
 import { ButtonToggleField, SelectField, TextAreaField } from '../shared/fields';
 import { LoadingScreen } from '../shared/loading-screen';
+import { ErrorScreen } from '../shared/error-screen';
 import { DB } from '../utils/init-firebase';
 import { toDataURL } from 'qrcode'
 
 export default function Page() {
     const [guestDoc, setGuestDoc] = React.useState();
     const [status, setStatus] = React.useState('loading');
-    const [guestId, setGuestId] = React.useState('loading');
+    const [statusDetail, setStatusDetail] = React.useState('loading');
+    const [guestId, setGuestId] = React.useState();
 
     React.useEffect(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -21,10 +23,11 @@ export default function Page() {
             .then(res => {
                 console.log('retrieved guest: ', {res, exists: res.exists, data: res.data(), guestId});
                 if (!res.exists) {
-                    setStatus(`Guest with id=${guestId} was not found!`);
+                    setStatus('error')
+                    setStatusDetail(`Guest with id=${guestId} was not found!`);
                 } else {
-                    setStatus('loaded');
                     setGuestDoc(res.data())
+                    setStatus('loaded');
                 }
             })
             .catch(err => setStatus(err.toString()))
@@ -35,11 +38,11 @@ export default function Page() {
         DB.collection('guest-responses').doc(guestId).set(result, {merge: true});
     }
 
+    if (status === 'error') {
+        return <ErrorScreen label={statusDetail} />
+    }
     if (status === 'loading') {
         return <LoadingScreen label="Finding guest information" />
-    }
-    if (status !== 'loaded' || !guestDoc) {
-        return <h1>Guest '{guestId}' Not Found</h1>
     }
 
     return (
