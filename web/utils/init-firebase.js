@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import 'firebase/firestore';
+import 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBfsrg8h4ySA0m7OA5dNyexzyGHpTzQZU8",
@@ -13,4 +14,17 @@ if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
+export function GetLoggedInUser() {
+    return new Promise((res, rej) => {
+        const unsubscribe = APP.auth().onAuthStateChanged((u) => {
+            res(u);
+            unsubscribe();
+        }, err => {
+            rej(err);
+            unsubscribe();
+        })
+    })
+}
+
+export const APP = firebase.app();
 export const DB = firebase.firestore(); 

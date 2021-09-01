@@ -7,6 +7,15 @@ export function TextField(props) {
     </div>;
 }
 
+export function PasswordField(props) {
+    return <div className="form-control">
+        <label className="label">
+            <span className="label-text">{props.label}</span>
+        </label>
+        <input onChange={e => props.onChange(e.currentTarget.value)} type="password" placeholder={props.label} className="input input-bordered" />
+    </div>;
+}
+
 export function TextAreaField(props) {
     return <div className="form-control">
         <label className="label">
