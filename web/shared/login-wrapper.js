@@ -1,5 +1,6 @@
 import React from 'react';
 import { GetLoggedInUser } from '../utils/init-firebase';
+import { LoadingScreen } from './loading-screen';
 import { LoginForm } from "./login-form";
 
 export function LoginWrapper(props) {
@@ -12,7 +13,7 @@ export function LoginWrapper(props) {
     }, []);
 
     if (status === 'loading') {
-        return <h1>Loading</h1>
+        return <LoadingScreen label="Checking login information" />
     }
 
     if (status === 'logged-in') {

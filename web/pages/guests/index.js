@@ -38,33 +38,35 @@ export default function Page() {
     return (
         <div className="container mx-auto">
             <Header links={[{ label: 'Guests', href: '/guests' }]}></Header>
-            <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Guest</a></Link>
-            <table className="table w-full table-compact mt-4">
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Address</th>
-                        <th>ID</th>
-                        <th>Responded?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        guests && guests.map((guest, i) => {
-                            return <tr key={i}>
-                                <th>{guest.first_name || '-'}</th>
-                                <th>{guest.last_name || '-'}</th>
-                                <th>{guest.address || '-'}</th>
-                                <th className="text-gray-300">{guest.id || '-'}</th>
-                                <th><ResponseIcon isGoing={(responses[guest.id])} /></th>
-                                <th><LinkButton id={guest.id} /></th>
-                                <th><EditButton id={guest.id} /></th>
-                            </tr>
-                        })
-                    }
-                </tbody>
-            </table>
+            <div className="px-3 overflow-x-auto">
+                <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Guest</a></Link>
+                <table className="table w-full table-compact mt-4">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Address</th>
+                            <th>ID</th>
+                            <th>Responded?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            guests && guests.map((guest, i) => {
+                                return <tr key={i}>
+                                    <th>{guest.first_name || '-'}</th>
+                                    <th>{guest.last_name || '-'}</th>
+                                    <th>{guest.address || '-'}</th>
+                                    <th className="text-gray-300">{guest.id || '-'}</th>
+                                    <th><ResponseIcon isGoing={(responses[guest.id])} /></th>
+                                    <th><LinkButton id={guest.id} /></th>
+                                    <th><EditButton id={guest.id} /></th>
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

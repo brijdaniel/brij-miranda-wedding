@@ -30,7 +30,7 @@ export default function Page() {
     return (
         <div className="container mx-auto">
             <Header links={[{ label: 'Guests', href: '/guests' }, { label: 'Add', href: '/guests/add' }]}></Header>
-            {loaded && <div>
+            {loaded && <div className="px-3">
                 <TextField label="First Name" onChange={setFirstName} />
                 <TextField label="Last Name" onChange={setLastName} />
                 <TextAreaField label="Address" onChange={setAddress} />
