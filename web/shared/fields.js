@@ -1,11 +1,18 @@
 import React from 'react';
 
-export function TextField({ label, onChange }) {
+function useDefaultValueRef(defaultValue) {
+    const ref = React.useRef();
+    React.useEffect(() => defaultValue != null && ref && (ref.current.value = defaultValue), []);
+    return ref;
+}
+
+export function TextField({ defaultValue, label, onChange }) {
+    const ref = useDefaultValueRef(defaultValue);
     return <div className="form-control">
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <input onChange={e => onChange(e.currentTarget.value)} type="text" placeholder={label} className="input input-bordered" />
+        <input ref={ref} onChange={e => onChange(e.currentTarget.value)} type="text" placeholder={label} className="input input-bordered" />
     </div>;
 }
 
@@ -18,21 +25,23 @@ export function PasswordField({ label, onChange }) {
     </div>;
 }
 
-export function TextAreaField({ label, onChange }) {
+export function TextAreaField({ defaultValue, label, onChange }) {
+    const ref = useDefaultValueRef(defaultValue);
     return <div className="form-control">
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <textarea rows={4} onChange={e => onChange(e.currentTarget.value)} type="text" placeholder={label} className="textarea textarea-bordered" />
+        <textarea ref={ref} rows={4} onChange={e => onChange(e.currentTarget.value)} type="text" placeholder={label} className="textarea textarea-bordered" />
     </div>;
 }
 
 export function CheckboxField({ label, onChange }) {
+    const ref = useDefaultValueRef(defaultValue);
     return <div className="p-6 card bordered">
         <div className="form-control">
             <label className="cursor-pointer label">
                 <span className="label-text">{label}</span>
-                <input type="checkbox" onChange={e => onChange(e.currentTarget.value)} className="checkbox" />
+                <input ref={ref} type="checkbox" onChange={e => onChange(e.currentTarget.value)} className="checkbox" />
             </label>
         </div>
     </div>;
