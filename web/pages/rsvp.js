@@ -70,15 +70,29 @@ const areYouComingOptions = [
     { label: 'Sorry', subLabel: 'I can\'t make it', value: 'no' },
 ]
 
+const wouldYouLikeTransportOptions = [
+    { label: 'Yes', subLabel: 'Yes Please!', value: 'yes' },
+    { label: 'No', subLabel: 'No Thanks', value: 'no' },
+]
+
+const transportLocationOptions = [
+	{ label: 'Hahndorf', value: 'Hahndorf'},
+	{ label: 'CBD', value: 'CBD'},
+]
+
 function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
     const [qrImgUrl, setQrImgUrl] = React.useState('none');
 
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
     const [areYouComingResult, setAreYouComingResult] = React.useState('');
+    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState('');
+    const [transportLocationResult, setTransportLocationResult] = React.useState('');
     const isComing = areYouComingResult === 'yes';
     const notComing = areYouComingResult === 'no';
     const isDietNone = dietOption === 'none';
+    const isTransport = wouldYouLikeTransportOptions === 'yes';
+    const isTransportNo = wouldYouLikeTransportOptions === 'no';
 
     React.useEffect(() => {
         if (!guestId || guestId == 'loading') {
@@ -95,6 +109,8 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
             is_coming: isComing,
             diet_option: dietOption,
             diet_extra_info: extraDietInfo,
+            transport_required: isTransport,
+            transport_location: transportLocationResult,
             created_at: new Date().toISOString()
         }
         onSubmit(resultObj);
@@ -119,6 +135,8 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
                 {isComing && <>
                     <SelectField label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
                     {!isDietNone && <TextAreaField label="Any extra dietary information?" onChange={setExtraDietOption} />}
+                	<SelectField label="Would you like transport?" options={wouldYouLikeTransportOptions} onChange={setTransportOption} />
+                	{!isTransportNone && <TextAreaField label="Where from?" onChange={setTransportLocation} />}
                 </>}
                 {notComing && <>
                     <h2 className="mt-3">We're sorry to hear that, look forward to seeing you soon :)</h2>
