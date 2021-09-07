@@ -71,12 +71,21 @@ export function ButtonToggleField({ label, options, onChange }) {
     </div>;
 }
 
-export function SelectField({ label, options, onChange }) {
+export function SelectField({ label, options, onChange, initialValue }) {
+    const ref = React.useRef();
+    React.useState(() => {
+        setTimeout(() => {
+            if (ref.current != null && initialValue) {
+                ref.current.value = initialValue;
+            }
+        });
+    }, []);
+
     return <div className="form-control w-full">
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <select onChange={e => onChange(e.currentTarget.value)} className="select select-bordered select-lg w-full">
+        <select ref={ref} onChange={e => onChange(e.currentTarget.value)} className="select select-bordered select-lg w-full">
             {options.map((o, i) => (<option key={i} value={o.value}>{o.label}</option>))}
         </select>
     </div>;
