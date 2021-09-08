@@ -127,7 +127,7 @@ function RsvpForm({ guestId, onSubmit }) {
         {isComing && <>
             <SelectField label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
             {!isDietNone && <TextAreaField label="Any extra dietary information?" onChange={setExtraDietOption} />}
-            <SelectField initialValue="no" label="Would you like transport?" options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
+            <SelectField initialValue="no" label="Would you be interested in transport?" options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
             {!isTransportNone && <SelectField label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
         </>}
         {isNotComing && <>
