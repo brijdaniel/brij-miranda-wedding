@@ -21,7 +21,7 @@ export default function Page() {
     React.useEffect(() => {
         DB.collection('guests').doc(guestId).get()
             .then(res => {
-                console.log('retrieved guest: ', {res, exists: res.exists, data: res.data(), guestId});
+                console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), guestId });
                 if (!res.exists) {
                     setStatus('error')
                     setStatusDetail(`Guest with id=${guestId} was not found!`);
@@ -34,8 +34,8 @@ export default function Page() {
     }, [guestId])
 
     const onSubmit = (result) => {
-        console.log('updating response: ', {result, guestId});
-        DB.collection('guest-responses').doc(guestId).set(result, {merge: true});
+        console.log('updating response: ', { result, guestId });
+        DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
     }
 
     if (status === 'error') {
@@ -76,8 +76,8 @@ const wouldYouLikeTransportOptions = [
 ]
 
 const transportLocationOptions = [
-	{ label: 'Hahndorf', value: 'Hahndorf'},
-	{ label: 'CBD', value: 'CBD'},
+    { label: 'Hahndorf', value: 'Hahndorf' },
+    { label: 'CBD', value: 'CBD' },
 ]
 
 function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
@@ -86,7 +86,7 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
     const [areYouComingResult, setAreYouComingResult] = React.useState('');
-    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState('');
+    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState('no');
     const [transportLocationResult, setTransportLocationResult] = React.useState('');
     const isComing = areYouComingResult === 'yes';
     const isNotComing = areYouComingResult === 'no';
@@ -135,8 +135,8 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
                 {isComing && <>
                     <SelectField label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
                     {!isDietNone && <TextAreaField label="Any extra dietary information?" onChange={setExtraDietOption} />}
-                	<SelectField initialValue="no" label="Would you like transport?"  options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
-                	{!isTransportNone && <SelectField label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
+                    <SelectField initialValue="no" label="Would you like transport?" options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
+                    {!isTransportNone && <SelectField label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
                 </>}
                 {isNotComing && <>
                     <h2 className="mt-3">We're sorry to hear that, look forward to seeing you soon :)</h2>
