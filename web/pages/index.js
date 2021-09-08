@@ -3,6 +3,9 @@ import React from 'react';
 export default function Page() {
   return (
     <div className="hero min-h-screen bg-base-200">
+      <div className="absolute right-0 top-0">
+        <a className="btn bg-red-500 opacity-30 m-3" href="/guests">Admin</a>
+      </div>
       <div className="text-center hero-content">
         <div className="max-w-md">
           <h1 className="mb-5 text-5xl font-bold">
