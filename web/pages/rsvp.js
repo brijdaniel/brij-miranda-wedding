@@ -89,6 +89,7 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
     const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState('');
     const [transportLocationResult, setTransportLocationResult] = React.useState('');
     const isComing = areYouComingResult === 'yes';
+    const isNotComing = areYouComingResult === 'no';
     const isDietNone = dietOption === 'none';
     const isTransportNone = wouldYouLikeTransportResult === 'no';
     const isTransportRequired = !isTransportNone;
@@ -137,7 +138,7 @@ function RsvpStateless({ guestId, firstName, lastName, address, onSubmit }) {
                 	<SelectField initialValue="no" label="Would you like transport?"  options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
                 	{!isTransportNone && <SelectField label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
                 </>}
-                {!isComing && <>
+                {isNotComing && <>
                     <h2 className="mt-3">We're sorry to hear that, look forward to seeing you soon :)</h2>
                 </>}
             </div>
