@@ -2,6 +2,7 @@ import React from 'react';
 import { ButtonToggleField, SelectField, TextAreaField } from '../shared/fields';
 import { LoadingScreen } from '../shared/loading-screen';
 import { ErrorScreen } from '../shared/error-screen';
+import { useRouter } from 'next/router'; 
 import { DB } from '../utils/init-firebase';
 import { QrCodeImage } from '../shared/qr-code-image';
 
@@ -11,14 +12,20 @@ export default function Page() {
     const [statusDetail, setStatusDetail] = React.useState('loading');
     const [guestId, setGuestId] = React.useState();
 
-    React.useEffect(() => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const params = Object.fromEntries(urlSearchParams.entries());
-        const guestId = params.id;
-        setGuestId(guestId);
-    }, []);
+    const router = useRouter();
 
     React.useEffect(() => {
+        if (!router.isReady) {
+            return;
+        }
+        const guestId = router.query.id;
+        setGuestId(guestId);
+    }, [router]);
+
+    React.useEffect(() => {
+        if (!guestId) {
+            return;
+        }
         DB.collection('guests').doc(guestId).get()
             .then(res => {
                 console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), guestId });
@@ -38,7 +45,7 @@ export default function Page() {
         DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
     }
 
-    if (status === 'loading' || !guestDoc) {
+    if (status === 'loading') {
         return <LoadingScreen label="Finding guest information" />
     }
 
@@ -141,5 +148,3 @@ function RsvpForm({ guestId, onSubmit }) {
     </div>
 
 }
-
-Page.isPublic = true;
