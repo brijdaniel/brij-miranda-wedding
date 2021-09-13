@@ -4,9 +4,9 @@ import { TextField, TextAreaField } from '../../shared/fields';
 import { Header } from '../../shared/header';
 
 export default function Page() {
-    const [firstName, setFirstName] = React.useState();
-    const [lastName, setLastName] = React.useState();
-    const [address, setAddress] = React.useState();
+    const [firstName, setFirstName] = React.useState<string>();
+    const [lastName, setLastName] = React.useState<string>();
+    const [address, setAddress] = React.useState<string>();
     const [loaded, setLoaded] = React.useState(true);
 
     const triggerClearForm = () => {

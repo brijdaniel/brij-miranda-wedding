@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
+import { GuestResponseDoc } from 'shared/guest.model';
 
 export default function Page() {
     const [guests, setGuests] = React.useState(null);
@@ -20,7 +21,7 @@ export default function Page() {
         }
         async function FetchResponses() {
             const res = await DB.collection('guest-responses').get()
-            const dataArr = res.docs.map(d => ({ ...d.data(), id: d.id }));
+            const dataArr = res.docs.map(d => ({ ...d.data(), id: d.id } as GuestResponseDoc));
             const dataObj = dataArr.reduce((a, c) => {
                 a[c.id] = !!c.is_coming;
                 return a;

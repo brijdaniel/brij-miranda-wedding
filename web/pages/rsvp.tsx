@@ -5,12 +5,13 @@ import { ErrorScreen } from '../shared/error-screen';
 import { useRouter } from 'next/router'; 
 import { DB } from '../utils/init-firebase';
 import { QrCodeImage } from '../shared/qr-code-image';
+import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
 
 export default function Page() {
-    const [guestDoc, setGuestDoc] = React.useState();
+    const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
     const [status, setStatus] = React.useState('loading');
     const [statusDetail, setStatusDetail] = React.useState('loading');
-    const [guestId, setGuestId] = React.useState();
+    const [guestId, setGuestId] = React.useState<string>();
 
     const router = useRouter();
 
@@ -18,7 +19,7 @@ export default function Page() {
         if (!router.isReady) {
             return;
         }
-        const guestId = router.query.id;
+        const guestId = router.query.id as string;
         setGuestId(guestId);
     }, [router]);
 
@@ -33,7 +34,7 @@ export default function Page() {
                     setStatus('error')
                     setStatusDetail(`Guest with id=${guestId} was not found!`);
                 } else {
-                    setGuestDoc(res.data())
+                    setGuestDoc(res.data() as GuestDoc)
                     setStatus('loaded');
                 }
             })
@@ -105,11 +106,13 @@ const transportLocationOptions = [
     { label: 'CBD', value: 'CBD' },
 ]
 
+type YesNo = 'yes' | 'no';
+
 function RsvpForm({ guestId, onSubmit }) {
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
-    const [areYouComingResult, setAreYouComingResult] = React.useState('');
-    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState('no');
+    const [areYouComingResult, setAreYouComingResult] = React.useState<string>();
+    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState<string>('no');
     const [transportLocationResult, setTransportLocationResult] = React.useState('');
     const isComing = areYouComingResult === 'yes';
     const isNotComing = areYouComingResult === 'no';
@@ -118,7 +121,7 @@ function RsvpForm({ guestId, onSubmit }) {
     const isTransportRequired = !isTransportNone;
 
     const onClickedSubmit = () => {
-        const resultObj = {
+        const resultObj: GuestResponseDoc = {
             is_coming: isComing,
             diet_option: dietOption,
             diet_extra_info: extraDietInfo,

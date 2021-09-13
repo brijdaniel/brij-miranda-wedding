@@ -3,14 +3,15 @@ import { DB } from '../../utils/init-firebase';
 import { TextField, TextAreaField } from '../../shared/fields';
 import { Header } from '../../shared/header';
 import { LoadingScreen } from '../../shared/loading-screen';
+import { GuestDoc } from 'shared/guest.model';
 
 export default function Page() {
-    const [firstName, setFirstName] = React.useState();
-    const [lastName, setLastName] = React.useState();
-    const [address, setAddress] = React.useState();
+    const [firstName, setFirstName] = React.useState<string>();
+    const [lastName, setLastName] = React.useState<string>();
+    const [address, setAddress] = React.useState<string>();
 
-    const [guestDoc, setGuestDoc] = React.useState();
-    const [guestId, setGuestId] = React.useState();
+    const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
+    const [guestId, setGuestId] = React.useState<string>();
     const [loaded, setLoaded] = React.useState(false);
     const [saving, setSaving] = React.useState(false);
 
@@ -27,7 +28,7 @@ export default function Page() {
         }
         async function Get() {
             const res = await DB.collection('guests').doc(guestId).get()
-            const docData = res.data();
+            const docData = res.data() as GuestDoc;
             setGuestDoc(docData);
             setFirstName(docData.first_name);
             setLastName(docData.last_name);

@@ -4,12 +4,15 @@ import { LoadingScreen } from './loading-screen';
 import { LoginForm } from "./login-form";
 
 export function LoginWrapper(props) {
-    const [status, setStatus] = React.useState('loading');
+    const [status, setStatus] = React.useState<string>('loading');
 
     React.useEffect(() => {
         GetLoggedInUser()
             .then((u) => setStatus(!!u ? 'logged-in' : 'not logged in!'))
-            .catch(err => setStatus(err.toString()) && console.error(err))
+            .catch(err => {
+                setStatus(err.toString());
+                console.error(err);
+            });
     }, []);
 
     if (status === 'loading') {
@@ -27,7 +30,7 @@ export function LoginWrapper(props) {
     </ErrorScreen>
 }
 
-function ErrorScreen({status, children}) {
+function ErrorScreen({status, children}: {status: string, children?: any}) {
     return <div className="hero min-h-screen bg-base-200">
         <div className="text-center hero-content">
             <div className="max-w-md">

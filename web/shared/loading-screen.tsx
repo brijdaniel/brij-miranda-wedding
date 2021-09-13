@@ -1,4 +1,4 @@
-export function LoadingScreen({label}) {
+export function LoadingScreen({label}: {label?: string}) {
     return <div className="hero min-h-screen bg-base-200">
         <div className="text-center hero-content">
             <div className="max-w-md">
