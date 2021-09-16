@@ -2,14 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
+import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
+
+type GuestResponseMap = {
+    [guestId: string]: boolean;
+}
 
 export default function Page() {
-    const [guests, setGuests] = React.useState(null);
-    const [responses, setResponses] = React.useState({});
+    const [guests, setGuests] = React.useState<GuestDoc[]>(null);
+    const [isGuestComingMap, setIsGuestComingMap] = React.useState<GuestResponseMap>({});
 
     React.useEffect(() => {
         DB.collection('guests').get()
-            .then(res => res.docs.map(d => ({ ...d.data(), id: d.id })))
+            .then(res => res.docs.map(d => ({ ...d.data(), id: d.id } as GuestDoc)))
             .then(dataArr => setGuests(dataArr))
             .catch((err) => console.error(err))
     }, []);
@@ -20,17 +25,13 @@ export default function Page() {
         }
         async function FetchResponses() {
             const res = await DB.collection('guest-responses').get()
-            const dataArr = res.docs.map(d => ({ ...d.data(), id: d.id }));
-            const dataObj = dataArr.reduce((a, c) => {
+            const responses = res.docs.map(d => ({ ...d.data(), id: d.id } as GuestResponseDoc));
+            const responsesMap = responses.reduce((a, c) => {
                 a[c.id] = !!c.is_coming;
                 return a;
-            }, {});
-            const responsesObj = guests.reduce((a, c) => {
-                a[c.id] = dataObj[c.id];
-                return a;
-            }, {});
-            setResponses(responsesObj);
-            console.log({ responsesObj });
+            }, {} as GuestResponseMap);
+            setIsGuestComingMap(responsesMap);
+            console.log({ responsesMap });
         }
         FetchResponses().catch((err) => console.error(err));
     }, [guests]);
@@ -58,7 +59,7 @@ export default function Page() {
                                     <th>{guest.last_name || '-'}</th>
                                     <th>{guest.address || '-'}</th>
                                     <th className="text-gray-300">{guest.id || '-'}</th>
-                                    <th><ResponseIcon isGoing={(responses[guest.id])} /></th>
+                                    <th><ResponseIcon isGoing={(isGuestComingMap[guest.id])} /></th>
                                     <th><LinkButton id={guest.id} /></th>
                                     <th><EditButton id={guest.id} /></th>
                                 </tr>

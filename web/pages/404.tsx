@@ -19,5 +19,3 @@ export default function Page() {
     </div>
   )
 }
-
-Page.isPublic = true;

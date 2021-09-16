@@ -2,23 +2,31 @@ import React from 'react';
 import { ButtonToggleField, SelectField, TextAreaField } from '../shared/fields';
 import { LoadingScreen } from '../shared/loading-screen';
 import { ErrorScreen } from '../shared/error-screen';
+import { useRouter } from 'next/router'; 
 import { DB } from '../utils/init-firebase';
 import { QrCodeImage } from '../shared/qr-code-image';
+import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
 
 export default function Page() {
-    const [guestDoc, setGuestDoc] = React.useState();
+    const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
     const [status, setStatus] = React.useState('loading');
     const [statusDetail, setStatusDetail] = React.useState('loading');
-    const [guestId, setGuestId] = React.useState();
+    const [guestId, setGuestId] = React.useState<string>();
+
+    const router = useRouter();
 
     React.useEffect(() => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const params = Object.fromEntries(urlSearchParams.entries());
-        const guestId = params.id;
+        if (!router.isReady) {
+            return;
+        }
+        const guestId = router.query.id as string;
         setGuestId(guestId);
-    }, []);
+    }, [router]);
 
     React.useEffect(() => {
+        if (!guestId) {
+            return;
+        }
         DB.collection('guests').doc(guestId).get()
             .then(res => {
                 console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), guestId });
@@ -26,7 +34,7 @@ export default function Page() {
                     setStatus('error')
                     setStatusDetail(`Guest with id=${guestId} was not found!`);
                 } else {
-                    setGuestDoc(res.data())
+                    setGuestDoc(res.data() as GuestDoc)
                     setStatus('loaded');
                 }
             })
@@ -38,7 +46,7 @@ export default function Page() {
         DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
     }
 
-    if (status === 'loading' || !guestDoc) {
+    if (status === 'loading') {
         return <LoadingScreen label="Finding guest information" />
     }
 
@@ -98,11 +106,13 @@ const transportLocationOptions = [
     { label: 'CBD', value: 'CBD' },
 ]
 
+type YesNo = 'yes' | 'no';
+
 function RsvpForm({ guestId, onSubmit }) {
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
-    const [areYouComingResult, setAreYouComingResult] = React.useState('');
-    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState('no');
+    const [areYouComingResult, setAreYouComingResult] = React.useState<string>();
+    const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState<string>('no');
     const [transportLocationResult, setTransportLocationResult] = React.useState('');
     const isComing = areYouComingResult === 'yes';
     const isNotComing = areYouComingResult === 'no';
@@ -111,7 +121,7 @@ function RsvpForm({ guestId, onSubmit }) {
     const isTransportRequired = !isTransportNone;
 
     const onClickedSubmit = () => {
-        const resultObj = {
+        const resultObj: GuestResponseDoc = {
             is_coming: isComing,
             diet_option: dietOption,
             diet_extra_info: extraDietInfo,
@@ -141,5 +151,3 @@ function RsvpForm({ guestId, onSubmit }) {
     </div>
 
 }
-
-Page.isPublic = true;

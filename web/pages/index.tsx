@@ -1,10 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 
 export default function Page() {
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="absolute right-0 top-0">
-        <a className="btn bg-red-500 opacity-30 m-3" href="/guests">Admin</a>
+        <Link href="/guests"><a className="btn bg-red-500 opacity-30 m-3">Admin</a></Link>
       </div>
       <div className="text-center hero-content">
         <div className="max-w-md">
@@ -24,5 +25,3 @@ export default function Page() {
     </div>
   )
 }
-
-Page.isPublic = true;

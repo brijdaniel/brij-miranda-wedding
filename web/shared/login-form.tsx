@@ -4,9 +4,9 @@ import { TextField, PasswordField } from './fields';
 import { LoadingScreen } from './loading-screen';
 
 export function LoginForm() {
-    const [email, setEmail] = React.useState();
-    const [password, setPassword] = React.useState();
-    const [loading, setLoading] = React.useState();
+    const [email, setEmail] = React.useState<string>();
+    const [password, setPassword] = React.useState<string>();
+    const [loading, setLoading] = React.useState<boolean>();
 
     const valid = email && password;
 
@@ -37,7 +37,7 @@ export function LoginForm() {
                 <div className="modal-action">
                     {valid ?
                         <label htmlFor="my-modal-2" onClick={onSubmit} className={"btn btn-primary"}>Login</label>
-                        : <button className="btn btn-primary" disabled="disabled">Login</button>
+                        : <button className="btn btn-primary" disabled={true}>Login</button>
                     }
                     <label htmlFor="my-modal-2" className="btn">Cancel</label>
                 </div>

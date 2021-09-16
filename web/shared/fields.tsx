@@ -1,13 +1,19 @@
 import React from 'react';
 
-function useDefaultValueRef(defaultValue) {
-    const ref = React.useRef();
-    React.useEffect(() => defaultValue != null && ref && (ref.current.value = defaultValue), []);
+function useDefaultValueRef<T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(defaultValue) {
+    const ref = React.useRef<T>();
+    React.useEffect(() => defaultValue != null && ref?.current && (ref.current.value = defaultValue), []);
     return ref;
 }
 
-export function TextField({ defaultValue, label, onChange }) {
-    const ref = useDefaultValueRef(defaultValue);
+type TextProps = {
+    defaultValue?: string, 
+    label: string, 
+    onChange: (val: string) => any
+};
+
+export function TextField({ defaultValue, label, onChange }: TextProps) {
+    const ref = useDefaultValueRef<HTMLInputElement>(defaultValue);
     return <div className="form-control">
         <label className="label">
             <span className="label-text">{label}</span>
@@ -16,7 +22,7 @@ export function TextField({ defaultValue, label, onChange }) {
     </div>;
 }
 
-export function PasswordField({ label, onChange }) {
+export function PasswordField({ label, onChange }: TextProps) {
     return <div className="form-control">
         <label className="label">
             <span className="label-text">{label}</span>
@@ -25,18 +31,18 @@ export function PasswordField({ label, onChange }) {
     </div>;
 }
 
-export function TextAreaField({ defaultValue, label, onChange }) {
-    const ref = useDefaultValueRef(defaultValue);
+export function TextAreaField({ defaultValue, label, onChange }: TextProps) {
+    const ref = useDefaultValueRef<HTMLTextAreaElement>(defaultValue);
     return <div className="form-control">
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <textarea ref={ref} rows={4} onChange={e => onChange(e.currentTarget.value)} type="text" placeholder={label} className="textarea textarea-bordered" />
+        <textarea ref={ref} rows={4} onChange={e => onChange(e.currentTarget.value)} placeholder={label} className="textarea textarea-bordered" />
     </div>;
 }
 
-export function CheckboxField({ label, onChange }) {
-    const ref = useDefaultValueRef(defaultValue);
+export function CheckboxField({ defaultValue, label, onChange }) {
+    const ref = useDefaultValueRef<HTMLInputElement>(defaultValue);
     return <div className="p-6 card bordered">
         <div className="form-control">
             <label className="cursor-pointer label">
@@ -71,15 +77,15 @@ export function ButtonToggleField({ label, options, onChange }) {
     </div>;
 }
 
-export function SelectField({ label, options, onChange, initialValue }) {
-    const ref = React.useRef();
-    React.useState(() => {
-        setTimeout(() => {
-            if (ref.current != null && initialValue) {
-                ref.current.value = initialValue;
-            }
-        });
-    }, []);
+type SelectProps = {
+    initialValue?: string, 
+    label: string, 
+    onChange: (val: string) => any,
+    options: {value: string, label: string}[];
+};
+
+export function SelectField({ label, options, onChange, initialValue }: SelectProps) {
+    const ref = useDefaultValueRef<HTMLSelectElement>(initialValue);
 
     return <div className="form-control w-full">
         <label className="label">

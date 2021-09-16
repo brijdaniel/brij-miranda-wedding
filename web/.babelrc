@@ -1,4 +1,7 @@
 {
-    "presets": ["next/babel"],
-    "plugins": []
-  }
+  "presets": [
+    ["next/babel"],
+    ["@babel/preset-env", { "targets": { "chrome": "62", "firefox": "62" } }]
+  ],
+  "plugins": []
+}
