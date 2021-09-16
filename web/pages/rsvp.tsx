@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { DB } from '../utils/init-firebase';
 import { QrCodeImage } from '../shared/qr-code-image';
 import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
+import Router from 'next/router'
 
 export default function Page() {
     const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
@@ -44,6 +45,7 @@ export default function Page() {
     const onSubmit = (result) => {
         console.log('updating response: ', { result, guestId });
         DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
+        Router.push('/info')
     }
 
     if (status === 'loading') {
