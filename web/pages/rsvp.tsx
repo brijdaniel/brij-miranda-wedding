@@ -67,7 +67,7 @@ export default function Page() {
         <div className="w-full min-h-screen bg-base-200">
             <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
                 <p className="rsvp">RSVP</p>
-                <p className="text-5xl">Dear {firstName} {lastName}</p>
+                <p className="guest">Dear {firstName} {lastName}</p>
                 <p className="mb-5">You've been invited to the wedding of Brij Daniel and Miranda Green</p>
 
                 <table className="table w-full table-compact my-4">

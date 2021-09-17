@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "@fontsource/pinyon-script";
 
 /* custom styles */
 h1 {
@@ -18,8 +19,15 @@ a {
 
 /* custom classes */
 .rsvp {
-  color: #a4e2c7;
+  color: #2b396d;
   font-family: "Computer Modern", sans-serif;
   font: bold;
+  font-size: 20px;
+}
+
+.guest {
+  color: #2b396d;
+  font-family: "Pinyon Script";
+  font-size: 40px;
 }
 
