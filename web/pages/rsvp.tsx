@@ -48,7 +48,7 @@ export default function Page() {
         console.log('updating response: ', { result, guestId });
         DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
         await new Promise(r => setTimeout(r, 1000)); // making a 1s 'sleep' so the gif will display before re-route
-        //Router.push('/info')
+        Router.push('/info')
     }
 
     if (status === 'loading') {
@@ -61,29 +61,18 @@ export default function Page() {
 
     const firstName = guestDoc.first_name;
     const lastName = guestDoc.last_name;
-    const address = guestDoc.address;
 
     return (
-        <div className="w-full min-h-screen bg-base-200">
-            <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
-                <p className="rsvp">RSVP</p>
-                <p className="guest">Dear {firstName} {lastName}</p>
-                <p className="mb-5">You've been invited to the wedding of Brij Daniel and Miranda Green</p>
-
-                <table className="table w-full table-compact my-4">
-                    <tbody>
-                        <tr><td>Name</td><td>{firstName} {lastName}</td></tr>
-                        <tr><td>Address</td><td>{address}</td></tr>
-                    </tbody>
-                </table>
-
-                <h1 className="mt-5 mb-3">Your Response</h1>
-                <RsvpForm
-                    guestId={guestId}
-                    onSubmit={onSubmit}
-                />
+            <div className="w-full min-h-screen bg-base-200" style={{ backgroundImage: "url(/page-background.png)" }}>
+                <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
+                    <p className="guest">Dear {firstName} {lastName}</p>
+                    <p className="eventannouncement">You're invited to the wedding of Brij Daniel and Miranda Green</p>
+                    <RsvpForm
+                        guestId={guestId}
+                        onSubmit={onSubmit}
+                    />
+                </div>
             </div>
-        </div>
     )
 }
 
