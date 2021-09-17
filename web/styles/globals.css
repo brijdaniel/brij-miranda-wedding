@@ -15,3 +15,11 @@ h3 {
 a {
   @apply text-blue-600 underline;
 }
+
+/* custom classes */
+.rsvp {
+  color: #a4e2c7;
+  font-family: "Computer Modern", sans-serif;
+  font: bold;
+}
+

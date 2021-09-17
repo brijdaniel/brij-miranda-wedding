@@ -7,6 +7,8 @@ import { DB } from '../utils/init-firebase';
 import { QrCodeImage } from '../shared/qr-code-image';
 import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
 import Router from 'next/router'
+import Image from 'next/image'
+import heartGif from '../public/hearts-love.gif'
 
 export default function Page() {
     const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
@@ -42,10 +44,11 @@ export default function Page() {
             .catch(err => setStatus(err.toString()))
     }, [guestId])
 
-    const onSubmit = (result) => {
+    const onSubmit = async (result) => {
         console.log('updating response: ', { result, guestId });
         DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
-        Router.push('/info')
+        await new Promise(r => setTimeout(r, 1000)); // making a 1s 'sleep' so the gif will display before re-route
+        //Router.push('/info')
     }
 
     if (status === 'loading') {
@@ -63,7 +66,7 @@ export default function Page() {
     return (
         <div className="w-full min-h-screen bg-base-200">
             <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
-                <p className="text-3xl font-bold my-4">RSVP</p>
+                <p className="rsvp">RSVP</p>
                 <p className="text-5xl">Dear {firstName} {lastName}</p>
                 <p className="mb-5">You've been invited to the wedding of Brij Daniel and Miranda Green</p>
 
@@ -110,6 +113,12 @@ const transportLocationOptions = [
 
 type YesNo = 'yes' | 'no';
 
+function displayGif() {
+    return (
+        <Image src={heartGif}/>
+    )
+}
+
 function RsvpForm({ guestId, onSubmit }) {
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
@@ -132,6 +141,7 @@ function RsvpForm({ guestId, onSubmit }) {
             created_at: new Date().toISOString()
         }
         onSubmit(resultObj);
+        displayGif();
     }
 
     return <div>
