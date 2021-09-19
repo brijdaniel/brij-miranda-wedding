@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { DB } from '../utils/init-firebase';
 import { Family, GuestResponseDoc } from 'shared/guest.model';
 import Router from 'next/router'
+import { TickAnimated } from 'shared/tick-animated';
 
 export default function Page() {
   const [guestDoc, setGuestDoc] = React.useState<Family>();
@@ -96,12 +97,6 @@ const transportLocationOptions = [
   { label: 'CBD', value: 'CBD' },
 ]
 
-function GifComponent() {
-  return (
-    <img width={200} height={200} src='/tick.gif' />
-  );
-}
-
 interface RsvpFormProps {
   guestId: string,
   onSubmit: (result: GuestResponseDoc) => any
@@ -135,7 +130,10 @@ function RsvpForm(props: RsvpFormProps) {
   }
 
   if (isSubmitted) {
-    return <div className="flex justify-around mt-16"><GifComponent /></div>
+    return <div className="w-full flex flex-col items-center mt-16">
+      <TickAnimated width={150} />
+      <p className="text-6xl font-pinyon-script text-green-500 font-bold pr-10">Done!</p>
+    </div>
   }
 
   return <div data-theme="mytheme">
