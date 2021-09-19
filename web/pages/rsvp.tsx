@@ -2,16 +2,15 @@ import React from 'react';
 import { ButtonToggleField, SelectField, TextAreaField } from '../shared/fields';
 import { LoadingScreen } from '../shared/loading-screen';
 import { ErrorScreen } from '../shared/error-screen';
-import { useRouter } from 'next/router'; 
+import { useRouter } from 'next/router';
 import { DB } from '../utils/init-firebase';
-import { QrCodeImage } from '../shared/qr-code-image';
-import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
+import { Family, GuestResponseDoc } from 'shared/guest.model';
 import Router from 'next/router'
 import Image from 'next/image'
 import tickGif from '../public/tick.gif'
 
 export default function Page() {
-    const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
+    const [guestDoc, setGuestDoc] = React.useState<Family>();
     const [status, setStatus] = React.useState('loading');
     const [statusDetail, setStatusDetail] = React.useState('loading');
     const [guestId, setGuestId] = React.useState<string>();
@@ -30,14 +29,14 @@ export default function Page() {
         if (!guestId) {
             return;
         }
-        DB.collection('guests').doc(guestId).get()
+        DB.collection('families').doc(guestId).get()
             .then(res => {
                 console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), guestId });
                 if (!res.exists) {
                     setStatus('error')
                     setStatusDetail(`Guest with id=${guestId} was not found!`);
                 } else {
-                    setGuestDoc(res.data() as GuestDoc)
+                    setGuestDoc(res.data() as Family)
                     setStatus('loaded');
                 }
             })
@@ -59,20 +58,19 @@ export default function Page() {
         return <ErrorScreen label={statusDetail} />
     }
 
-    const firstName = guestDoc.first_name;
-    const lastName = guestDoc.last_name;
+    const familyName = guestDoc.family_name;
 
     return (
-            <div className="w-full min-h-screen bg-base-200 bg-flowers" >
-                <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
-                    <p className="guest">Dear {firstName} {lastName}</p>
-                    <p className="eventannouncement">You're invited to the wedding of Brij Daniel and Miranda Green</p>
-                    <RsvpForm
-                        guestId={guestId}
-                        onSubmit={onSubmit}
-                    />
-                </div>
+        <div className="w-full min-h-screen bg-base-200 bg-flowers" >
+            <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
+                <p className="guest">Dear {familyName}</p>
+                <p className="eventannouncement">You're invited to the wedding of Brij Daniel and Miranda Green</p>
+                <RsvpForm
+                    guestId={guestId}
+                    onSubmit={onSubmit}
+                />
             </div>
+        </div>
     )
 }
 
@@ -104,17 +102,17 @@ type YesNo = 'yes' | 'no';
 
 function GifComponent() {
     return (
-        <Image width={200} height={200} src={tickGif}/>
+        <Image width={200} height={200} src={tickGif} />
     )
 }
 
-interface RsvpFormProps { 
-    guestId: string, 
+interface RsvpFormProps {
+    guestId: string,
     onSubmit: (result: GuestResponseDoc) => any
 }
 
 function RsvpForm(props: RsvpFormProps) {
-    const {guestId, onSubmit} = props
+    const { guestId, onSubmit } = props
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
     const [isSubmitted, setIsSubmited] = React.useState(false);
