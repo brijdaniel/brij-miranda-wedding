@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 export default function Page() {
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-screen bg-flowers">
       <div className="absolute right-0 top-0">
         <Link href="/guests"><a className="btn bg-red-500 opacity-30 m-3">Admin</a></Link>
       </div>
-      <div className="text-center hero-content" style={{ backgroundImage: "url(/page-background.png)" }}>
+      <div className="text-center hero-content">
         <div className="max-w-md">
           <h1 className="mb-5 text-5xl font-bold">
             Brij {'&'} Miranda's Wedding

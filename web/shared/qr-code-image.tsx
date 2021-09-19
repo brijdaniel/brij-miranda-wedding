@@ -13,5 +13,5 @@ export function QrCodeImage({ url }) {
         });
     }, [url])
 
-    return qrImgUrl && <img width={200} src={qrImgUrl} />
+    return qrImgUrl && <img width={120} src={qrImgUrl} />
 }
