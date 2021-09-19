@@ -61,7 +61,7 @@ export function ButtonToggleField({ label, options, onChange }) {
         <label className="label">
             <span className="label-text">{label}</span>
         </label>
-        <div className="btn-group w-full">
+        <div className="btn-group w-full bg-white">
             {options.map((o, i) => (<button
                 key={i}
                 className={('w-1/' + options.length) + ' btn btn-outline btn-lg ' + (o.value === selected ? 'btn-active' : '')}
