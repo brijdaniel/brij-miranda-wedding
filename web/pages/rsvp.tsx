@@ -133,7 +133,7 @@ function RsvpForm({ guestId, onSubmit }) {
         displayGif();
     }
 
-    return <div>
+    return <div data-theme="mytheme">
         <ButtonToggleField label="Are you coming?" options={areYouComingOptions} onChange={setAreYouComingResult} />
         {isComing && <>
             <SelectField label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
