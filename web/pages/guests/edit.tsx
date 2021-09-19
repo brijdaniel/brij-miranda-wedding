@@ -45,7 +45,7 @@ export default function Page() {
             address: address,
             first_name: firstName,
             last_name: lastName,
-        }, {merge: true}).then(() => {
+        }, { merge: true }).then(() => {
             location.href = `${location.origin}/guests`
         });
     };
@@ -57,21 +57,23 @@ export default function Page() {
     }
 
     return (
-        <div className="container mx-auto">
+        <>
             <Header links={[{ label: 'Guests', href: '/guests' }, { label: 'Edit', href: '/guests/edit' }]}></Header>
-            {loaded && guestDoc && !saving && <div className="px-3">
-                <TextField defaultValue={guestDoc.first_name} label="First Name" onChange={setFirstName} />
-                <TextField defaultValue={guestDoc.last_name} label="Last Name" onChange={setLastName} />
-                <TextAreaField defaultValue={guestDoc.address} label="Address" onChange={setAddress} />
-            </div>}
-            {saving && <div className="w-full text-center mt-8 pt-10">
-                <h1>Saving...</h1>
-                <h3>{firstName} {lastName}</h3>
-            </div>}
-            {!saving && <div className="w-full flex justify-around">
-                <button disabled={shouldDisable} type="button" onClick={onSubmit} className="btn btn-primary mt-5">Save Guest</button>
-            </div>}
-        </div>
+            <div className="container mx-auto">
+                {loaded && guestDoc && !saving && <div className="px-3">
+                    <TextField defaultValue={guestDoc.first_name} label="First Name" onChange={setFirstName} />
+                    <TextField defaultValue={guestDoc.last_name} label="Last Name" onChange={setLastName} />
+                    <TextAreaField defaultValue={guestDoc.address} label="Address" onChange={setAddress} />
+                </div>}
+                {saving && <div className="w-full text-center mt-8 pt-10">
+                    <h1>Saving...</h1>
+                    <h3>{firstName} {lastName}</h3>
+                </div>}
+                {!saving && <div className="w-full flex justify-around">
+                    <button disabled={shouldDisable} type="button" onClick={onSubmit} className="btn btn-primary mt-5">Save Guest</button>
+                </div>}
+            </div>
+        </>
     )
 }
 

@@ -14,3 +14,21 @@ export interface GuestResponseDoc {
     transport_location?: string;
     created_at: string;
 }
+
+export interface FamilyGuestDoc {
+    id?: string;
+    first_name: string;
+    last_name: string;
+}
+
+export interface Family {
+    id?: string;
+    address: string;
+    family_name: string;
+    guests: FamilyGuestDoc[];
+}
+
+export interface FamilyResponseDoc {
+    id?: string;
+    responses: GuestResponseDoc[];
+}

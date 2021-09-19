@@ -2,19 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
-import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
+import { Family, GuestDoc, GuestResponseDoc } from 'shared/guest.model';
 
 type GuestResponseMap = {
     [guestId: string]: boolean;
 }
 
 export default function Page() {
-    const [guests, setGuests] = React.useState<GuestDoc[]>(null);
+    const [guests, setGuests] = React.useState<Family[]>(null);
     const [isGuestComingMap, setIsGuestComingMap] = React.useState<GuestResponseMap>({});
 
     React.useEffect(() => {
-        DB.collection('guests').get()
-            .then(res => res.docs.map(d => ({ ...d.data(), id: d.id } as GuestDoc)))
+        DB.collection('families').get()
+            .then(res => res.docs.map(d => ({ ...d.data(), id: d.id } as Family)))
             .then(dataArr => setGuests(dataArr))
             .catch((err) => console.error(err))
     }, []);
@@ -37,38 +37,46 @@ export default function Page() {
     }, [guests]);
 
     return (
-        <div className="container mx-auto">
+        <>
             <Header links={[{ label: 'Guests', href: '/guests' }]}></Header>
-            <div className="px-3 overflow-x-auto">
-                <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Guest</a></Link>
-                <table className="table w-full table-compact mt-4">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Address</th>
-                            <th>ID</th>
-                            <th>Responded?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            guests && guests.map((guest, i) => {
-                                return <tr key={i}>
-                                    <th>{guest.first_name || '-'}</th>
-                                    <th>{guest.last_name || '-'}</th>
-                                    <th>{guest.address || '-'}</th>
-                                    <th className="text-gray-300">{guest.id || '-'}</th>
-                                    <th><ResponseIcon isGoing={(isGuestComingMap[guest.id])} /></th>
-                                    <th><LinkButton id={guest.id} /></th>
-                                    <th><EditButton id={guest.id} /></th>
-                                </tr>
-                            })
-                        }
-                    </tbody>
-                </table>
+            <div className="container mx-auto">
+                <div className="px-3 overflow-x-auto">
+                    <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Family</a></Link>
+                    <table className="table w-full table-compact mt-4">
+                        <thead>
+                            <tr>
+                                <th>Family Name</th>
+                                <th>Guests</th>
+                                <th>Address</th>
+                                <th>Responded?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                guests && guests.map((family, i) => {
+                                    return <tr key={i}>
+                                        <th>
+                                            <p className="font-bold text-xl">{family.family_name || '-'}</p>
+                                            <p className="text-gray-300 text-xs italic">{family.id}</p>
+                                        </th>
+                                        <th>
+                                            <ul className="list-disc list-inside">
+                                                {family.guests && family.guests.map((guest, i) => {
+                                                    return <li key={i}>{guest.first_name} {guest.last_name}</li>
+                                                })}
+                                            </ul>
+                                        </th>
+                                        {/* <th><ResponseIcon isGoing={(isfamilyComingMap[family.id])} /></th> */}
+                                        <th><LinkButton id={family.id} /></th>
+                                        <th><EditButton id={family.id} /></th>
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
