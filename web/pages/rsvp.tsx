@@ -8,7 +8,7 @@ import { QrCodeImage } from '../shared/qr-code-image';
 import { GuestDoc, GuestResponseDoc } from 'shared/guest.model';
 import Router from 'next/router'
 import Image from 'next/image'
-import heartGif from '../public/hearts-love.gif'
+import tickGif from '../public/tick.gif'
 
 export default function Page() {
     const [guestDoc, setGuestDoc] = React.useState<GuestDoc>();
@@ -47,7 +47,7 @@ export default function Page() {
     const onSubmit = async (result) => {
         console.log('updating response: ', { result, guestId });
         DB.collection('guest-responses').doc(guestId).set(result, { merge: true });
-        await new Promise(r => setTimeout(r, 1000)); // making a 1s 'sleep' so the gif will display before re-route
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // making a 1s 'sleep' so the gif will display before re-route
         Router.push('/info')
     }
 
@@ -102,15 +102,22 @@ const transportLocationOptions = [
 
 type YesNo = 'yes' | 'no';
 
-function displayGif() {
+function GifComponent() {
     return (
-        <Image src={heartGif}/>
+        <Image width={200} height={200} src={tickGif}/>
     )
 }
 
-function RsvpForm({ guestId, onSubmit }) {
+interface RsvpFormProps { 
+    guestId: string, 
+    onSubmit: (result: GuestResponseDoc) => any
+}
+
+function RsvpForm(props: RsvpFormProps) {
+    const {guestId, onSubmit} = props
     const [dietOption, setDietOption] = React.useState('none');
     const [extraDietInfo, setExtraDietOption] = React.useState('');
+    const [isSubmitted, setIsSubmited] = React.useState(false);
     const [areYouComingResult, setAreYouComingResult] = React.useState<string>();
     const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState<string>('no');
     const [transportLocationResult, setTransportLocationResult] = React.useState('');
@@ -130,7 +137,11 @@ function RsvpForm({ guestId, onSubmit }) {
             created_at: new Date().toISOString()
         }
         onSubmit(resultObj);
-        displayGif();
+        setIsSubmited(true);
+    }
+
+    if (isSubmitted) {
+        return <div className="flex justify-around mt-16"><GifComponent /></div>
     }
 
     return <div data-theme="mytheme">
@@ -145,10 +156,9 @@ function RsvpForm({ guestId, onSubmit }) {
             <h2 className="mt-3">We're sorry to hear that, look forward to seeing you soon :)</h2>
         </>}
         <button disabled={!areYouComingResult} onClick={onClickedSubmit} className="my-3 btn btn-primary">Send Response</button>
-        {guestId && <div className="items-center flex flex-col max-w-full">
+        {/* {guestId && <div className="items-center flex flex-col max-w-full">
             <h4 className="mt-3 -mb-5 z-10">Guest QR Code</h4>
             <QrCodeImage url={`${location.origin}/rsvp?id=${guestId}`}  />
-        </div>}
+        </div>} */}
     </div>
-
 }
