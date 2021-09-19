@@ -63,7 +63,7 @@ export default function Page() {
     const lastName = guestDoc.last_name;
 
     return (
-            <div className="w-full min-h-screen bg-base-200" style={{ backgroundImage: "url(/page-background.png)" }}>
+            <div className="w-full min-h-screen bg-base-200 bg-flowers" >
                 <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
                     <p className="guest">Dear {firstName} {lastName}</p>
                     <p className="eventannouncement">You're invited to the wedding of Brij Daniel and Miranda Green</p>
