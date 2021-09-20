@@ -14,12 +14,14 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-wrap">
+    <div className="relative">
       {guests && guests.map((guest) => {
-        return <Invitation
-          id={guest.id}
-          family_name={guest.family_name}
-        />;
+        return <div key={guest.id} className="relative page-break-avoid inline-block">
+          <Invitation
+            id={guest.id}
+            family_name={guest.family_name}
+          />
+        </div>;
       })}
     </div>
   )

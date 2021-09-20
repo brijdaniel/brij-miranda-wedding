@@ -10,7 +10,7 @@ export function Invitation({ family_name, id }: InvitationProps) {
   const width = '500px';
   const height = '800px';
 
-  return <div className="bg-gray-200 bg-flowers border" style={{ width, height }} >
+  return <div className="page-break-avoid bg-gray-200 bg-flowers border" style={{ width, height }} >
     <div className="transform -skew-y-3 my-8 font-pinyon-script my-20 text-center">
       <div className="text-4xl">Dear {family_name}</div>
       <div className="text-2xl">You're cordially invited to the wedding of</div>

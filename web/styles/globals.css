@@ -50,6 +50,10 @@ a {
   font-family: "Pinyon Script";
 }
 
+.page-break-avoid {
+  page-break-inside: avoid;
+}
+
 /* CHECK MARK ANIMATION */
 
 .animated-checkmark-one {
