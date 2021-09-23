@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Invitation } from "shared/invitation";
-import { DB } from '../utils/init-firebase';
+import { DB } from '../../../utils/init-firebase';
 import { Family } from 'shared/guest.model';
 
 
@@ -41,6 +41,6 @@ export default function Page() {
     const familyName = guestDoc.family_name;
 
     return <>
-        <Invitation id={guestId} family_name={familyName} />
+        <Invitation family_name={familyName} id={guestId} />
     </>;
 }
