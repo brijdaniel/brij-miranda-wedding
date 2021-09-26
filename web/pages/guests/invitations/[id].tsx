@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Invitation } from "shared/invitation";
 import { DB } from '../../../utils/init-firebase';
 import { Family } from 'shared/guest.model';
+import { LoadingScreen } from 'shared/loading-screen';
 
 
 
@@ -38,9 +39,11 @@ export default function Page() {
           .catch(err => setStatus(err.toString()))
       }, [guestId])
 
-    const familyName = guestDoc.family_name;
-
-    return <>
-        <Invitation family_name={familyName} id={guestId} />
-    </>;
+    if (status === 'loaded') {
+      const familyName = guestDoc?.family_name;
+      return <>
+          <Invitation family_name={familyName} id={guestId} />
+      </>;
+    }
+    return <LoadingScreen label="Loading invitation information..." />
 }
