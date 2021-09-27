@@ -17,7 +17,7 @@ export function Invitation({ family_name, id }: InvitationProps) {
     </div>
     <div className="transform -skew-y-12 text-6xl font-pinyon-script flex flex-col items-center">
       <p className="">Brij</p>
-      <p className="font-sans">{'&'}</p>
+      <p className="font-allison mt-3">{'&'}</p>
       <p className="text-7xl">Miranda</p>
     </div>
     <div className="w-full flex flex-col items-end mt-24">

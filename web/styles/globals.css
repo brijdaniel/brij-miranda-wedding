@@ -2,6 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "@fontsource/pinyon-script";
+@import "@fontsource/allison";
 
 /* custom styles */
 h1 {
@@ -48,6 +49,10 @@ a {
 
 .font-pinyon-script {
   font-family: "Pinyon Script";
+}
+
+.font-allison {
+  font-family: 'Allison';
 }
 
 .page-break-avoid {

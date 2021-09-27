@@ -1168,6 +1168,11 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.5.1.tgz#a64d1af3c62e3bb89576ec58af880980a562bf4e"
   integrity sha512-dZMzN0uAjwJXWYYAcnxIwXqRTZw3o14hGe7O6uhwjD1ZQWPVYA5lASgnNskEBra0knVBsOXB4KXg+HnlKewN/A==
 
+"@fontsource/allison@^4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@fontsource/allison/-/allison-4.5.1.tgz#8ee6984c74c10588dbe9165f159c2a7656fb0ad5"
+  integrity sha512-iR7rI62l1Ewv2pftSF17goA+h+QE+59yVhKKruWsSVHIVyzBjWo4MOBTZDrGmHmL/B62Q3rlbYE8m84iX5Kc+w==
+
 "@fontsource/pinyon-script@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@fontsource/pinyon-script/-/pinyon-script-4.5.0.tgz#48f808b99e78320b9ead341ced69ae383ac5e696"
