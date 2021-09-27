@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
+    "@fontsource/allison": "^4.5.1",
     "@fontsource/pinyon-script": "^4.5.0",
     "daisyui": "^1.14.0",
     "firebase": "^8.6.2",
