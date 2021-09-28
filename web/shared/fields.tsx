@@ -53,8 +53,26 @@ export function CheckboxField({ defaultValue, label, onChange }) {
     </div>;
 }
 
-export function ButtonToggleField({ label, options, onChange }) {
-    const [selected, setSelected] = React.useState();
+interface ButtonToggleFieldProps {
+    defaultValue?: string, 
+    label: any, 
+    options: ButtonToggleOption[], 
+    onChange: (val: string) => any
+}
+
+interface ButtonToggleOption {
+    value: string;
+    label: string;
+    subLabel: string;
+}
+
+export function ButtonToggleField({ defaultValue, label, options, onChange }: ButtonToggleFieldProps) {
+    React.useEffect(() => {
+        if (defaultValue) {
+            setSelected(defaultValue);
+        }
+    }, [defaultValue]);
+    const [selected, setSelected] = React.useState<string>();
     React.useEffect(() => onChange(selected), [selected]);
 
     return <div className="form-control w-full">
@@ -78,14 +96,14 @@ export function ButtonToggleField({ label, options, onChange }) {
 }
 
 type SelectProps = {
-    initialValue?: string, 
+    defaultValue?: string, 
     label: string, 
     onChange: (val: string) => any,
     options: {value: string, label: string}[];
 };
 
-export function SelectField({ label, options, onChange, initialValue }: SelectProps) {
-    const ref = useDefaultValueRef<HTMLSelectElement>(initialValue);
+export function SelectField({ label, options, onChange, defaultValue }: SelectProps) {
+    const ref = useDefaultValueRef<HTMLSelectElement>(defaultValue);
 
     return <div className="form-control w-full">
         <label className="label">
