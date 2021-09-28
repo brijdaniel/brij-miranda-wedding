@@ -6,6 +6,7 @@ interface FamilyFormProps {
   initialValue?: Family;
   onSubmit: (value: Family) => any;
   onCancel?: () => any;
+  onDelete?: () => any;
 }
 
 export function FamilyForm(props: FamilyFormProps) {
@@ -25,6 +26,10 @@ export function FamilyForm(props: FamilyFormProps) {
     props.onSubmit(family);
   };
 
+  const onDelete = () => {
+    props.onDelete();
+  }
+
   const isFormInvalid = !familyName || !guests || guests.length < 1 || !address;
 
   return (
@@ -34,9 +39,12 @@ export function FamilyForm(props: FamilyFormProps) {
 
       <Guests defaultValue={initialValue?.guests} onChange={setGuests} />
 
-      <div className="flex gap-2 mt-5">
-        <button disabled={isFormInvalid} type="button" onClick={onSubmit} className="btn btn-primary">Save Family</button>
-        <button type="button" onClick={() => props?.onCancel()} className="btn">Cancel</button>
+      <div className="flex gap-2 items-start justify-between mt-5">
+        <div className="flex gap-2 items-center">
+          <button disabled={isFormInvalid} type="button" onClick={onSubmit} className="btn btn-primary">Save Family</button>
+          <button type="button" onClick={() => props?.onCancel()} className="btn">Cancel</button>
+        </div>
+        <button disabled={isFormInvalid} type="button" onClick={onDelete} className="btn btn-error mt-20">Delete Family</button>
       </div>
     </>
   )
@@ -123,7 +131,7 @@ function Guest(props: GuestProps) {
     <TextField defaultValue={props.defaultValue?.first_name} label="First Name" onChange={setFirstName} />
     <div className="flex items-end gap-2 flex-grow">
       <div className="flex-grow"><TextField defaultValue={props.defaultValue?.last_name} label="Last Name" onChange={setLastName} /></div>
-      <button className="btn" onClick={props.onDelete}>Delete</button>
+      <button className="btn" onClick={props.onDelete}>X</button>
     </div>
   </div>
 }
