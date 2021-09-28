@@ -46,6 +46,12 @@ export default function Page() {
         router.push('/guests');
     }
 
+    const onDelete = async () => {
+        setSaving(true);
+        await DB.collection('families').doc(familyId).delete();
+        router.push('/guests');
+    }
+
     if (saving) {
         return <LoadingScreen label="Saving family"/>
     }
@@ -59,7 +65,7 @@ export default function Page() {
             <Header links={[{ label: 'Guests', href: '/guests' }, { label: 'Edit', href: '/guests/edit' }]}></Header>
             <div className="container mx-auto">
                 {loaded && <div className="px-3">
-                <FamilyForm initialValue={familyDoc} onSubmit={onSubmit} onCancel={onCancel} />
+                <FamilyForm initialValue={familyDoc} onSubmit={onSubmit} onCancel={onCancel} onDelete={onDelete} />
                 </div>}
             </div>
         </>
