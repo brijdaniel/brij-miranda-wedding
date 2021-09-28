@@ -2,18 +2,18 @@ import React from 'react';
 import Link from 'next/link';
 import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
-import { Family, FamilyGuestDoc, GuestResponseDoc } from 'shared/guest.model';
+import { Family, FamilyGuestDoc, FamilyResponseDoc, GuestResponseDoc } from 'shared/guest.model';
 import { TextField } from 'shared/fields';
 
 type GuestResponseMap = {
-  [guestId: string]: boolean;
+  [guestId: string]: GuestResponseDoc;
 }
 
 export default function Page() {
   const [guestsFilterText, setGuestsFilterText] = React.useState<string>('');
   const [guests, setGuests] = React.useState<Family[]>(null);
   const [guestsFiltered, setGuestsFiltered] = React.useState<Family[]>(null);
-  const [isGuestComingMap, setIsGuestComingMap] = React.useState<GuestResponseMap>({});
+  const [guestResponseMap, setGuestResponseMap] = React.useState<GuestResponseMap>({});
 
   React.useEffect(() => {
     DB.collection('families').get()
@@ -39,22 +39,25 @@ export default function Page() {
     setGuestsFiltered(filtered);
   }, [guests, guestsFilterText])
 
-  // React.useEffect(() => {
-  //   if (!guests) {
-  //     return;
-  //   }
-  //   async function FetchResponses() {
-  //     const res = await DB.collection('guest-responses').get()
-  //     const responses = res.docs.map(d => ({ ...d.data(), id: d.id } as GuestResponseDoc));
-  //     const responsesMap = responses.reduce((a, c) => {
-  //       a[c.id] = !!c.is_coming;
-  //       return a;
-  //     }, {} as GuestResponseMap);
-  //     setIsGuestComingMap(responsesMap);
-  //     console.log({ responsesMap });
-  //   }
-  //   FetchResponses().catch((err) => console.error(err));
-  // }, [guests]);
+  React.useEffect(() => {
+    if (!guests) {
+      return;
+    }
+    async function FetchResponses() {
+      const res = await DB.collection('family-responses').get()
+      const familyResponses = res.docs.map(d => ({ ...d.data(), id: d.id } as FamilyResponseDoc));
+      const responsesMap = familyResponses.reduce((a, c) => {
+        const familyReponses = c.responses;
+        familyReponses?.map((guestResponse) => {
+          a[guestResponse.id] = guestResponse;
+        });
+        return a;
+      }, {} as GuestResponseMap);
+      setGuestResponseMap(responsesMap);
+      console.log({ responsesMap });
+    }
+    FetchResponses().catch((err) => console.error(err));
+  }, [guests]);
 
   return (
     <>
@@ -73,7 +76,7 @@ export default function Page() {
               <tr>
                 <th>Family Name</th>
                 <th>Guests</th>
-                <th>Responded?</th>
+                <th>Actions?</th>
               </tr>
             </thead>
             <tbody>
@@ -86,15 +89,18 @@ export default function Page() {
                       <p className="text-gray-300 text-xs italic">{family.id}</p>
                     </th>
                     <th>
-                      <ul className="list-disc list-inside">
+                      <div className="flex flex-col gap-2">
                         {family.guests && family.guests.map((guest, i) => {
-                          return <li key={i}>{guest.first_name} {guest.last_name}</li>
+                          console.log({map: guestResponseMap[guest.id], id: guest.id})
+                          return <GuestRow 
+                            key={guest.id} 
+                            guestNumber={i} 
+                            guest={guest} 
+                            response={guestResponseMap[guest.id]} 
+                          />
                         })}
-                      </ul>
+                      </div>
                     </th>
-                    <th><ResponseIcon isGoing={true
-                      // (isfamilyComingMap[family.id])
-                      } /></th>
                     <th><RsvpButton id={family.id} /></th>
                     <th><LinkButton id={family.id} /></th>
                     <th><EditButton id={family.id} /></th>
@@ -109,15 +115,25 @@ export default function Page() {
   )
 }
 
+function GuestRow({ guestNumber, guest, response }: { guestNumber: number, guest: FamilyGuestDoc, response: GuestResponseDoc | undefined }) {
+  return <span className="flex gap-2 items-center">
+    <span className="font-bold">{guestNumber + 1}.</span>
+    <span className="font-normal">{guest.first_name} {guest.last_name}</span>
+    {response && <ResponseIcon isGoing={response?.is_coming} />}
+  </span>;
+}
+
 function ResponseIcon({ isGoing }) {
   const noResponseYet = isGoing == null;
+  const SIZE = 12;
+
   if (noResponseYet) {
-    return <SvgBase label="Hasn't responded yet"><path d="M2 16 L30 16" /></SvgBase>;
+    return <SvgBase height={SIZE} width={SIZE} label="Hasn't responded yet"><path d="M2 16 L30 16" /></SvgBase>;
   }
   if (isGoing) {
-    return <SvgBase label="Responded 'going'"><path d="M2 20 L12 28 30 4" /></SvgBase>;
+    return <SvgBase height={SIZE} width={SIZE} label="Responded 'going'"><path d="M2 20 L12 28 30 4" /></SvgBase>;
   } else {
-    return <SvgBase label="Responded 'cant make it'"><path d="M2 30 L30 2 M30 30 L2 2" /></SvgBase>;
+    return <SvgBase height={SIZE} width={SIZE} label="Responded 'cant make it'"><path d="M2 30 L30 2 M30 30 L2 2" /></SvgBase>;
   }
 }
 
@@ -156,9 +172,9 @@ function ToolTip({ label, children }) {
   return <div data-tip={label} className="tooltip">{children}</div>
 }
 
-function SvgBase({ label, children }) {
+function SvgBase({ label, children, height, width }) {
   return <ToolTip label={label}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width={width} height={height} fill="none" stroke="currentcolor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
       {children}
     </svg>
   </ToolTip>;
