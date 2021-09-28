@@ -11,7 +11,7 @@ export default function Page() {
       <InviteCore />      
       <div className="mt-10" >
         <a href="https://www.google.com/maps/place/Maximilians+Restaurant/@-34.95585,138.619768,11.81z/data=!4m5!3m4!1s0x0:0x3a95c76dc2f4028a!8m2!3d-35.0109219!4d138.7839548">
-          <img src="/map.JPG"/>
+          <img className="p-10" src="/map.JPG"/>
         </a>
       </div>
     </div>
