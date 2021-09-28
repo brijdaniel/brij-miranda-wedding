@@ -3,20 +3,28 @@ import { ButtonToggleField, SelectField, TextAreaField } from "./fields"
 import { Family, FamilyGuestDoc, FamilyResponseDoc, GuestResponseDoc } from "./guest.model"
 
 interface RsvpFormProps {
+  previousResponse: FamilyResponseDoc | undefined;
   familyDoc: Family;
-  onSubmit: (result: FamilyResponseDoc) => any
+  onSubmit: (result: FamilyResponseDoc) => any;
 }
 
 export function RsvpForm(props: RsvpFormProps) {
-  const { onSubmit, familyDoc } = props
+  const { onSubmit, familyDoc, previousResponse } = props
+  const [responsesPrevious, setResponsesPrevious] = React.useState<GuestResponseDoc[]>([]);
   const [responses, setResponses] = React.useState<GuestResponseDoc[]>([]);
   const [isFormValid, setIsFormValid] = React.useState<boolean>();
+
+  React.useEffect(() => {
+    if (previousResponse) {
+      setResponsesPrevious(previousResponse.responses);
+    }
+  }, [previousResponse]);
 
   React.useEffect(() => {
     const guestCount = familyDoc.guests?.length;
     const isValid = guestCount === responses.length;
     setIsFormValid(isValid);
-    console.log({isValid, responses, guests: familyDoc.guests})
+    console.log({ isValid, responses, guests: familyDoc.guests })
   }, [responses, familyDoc]);
 
   const onClickedSubmit = () => {
@@ -43,7 +51,8 @@ export function RsvpForm(props: RsvpFormProps) {
   return <div data-theme="mytheme">
     <div className="flex flex-col gap-2">
       {
-        familyDoc.guests.map((guest) => <RsvpGuestForm
+        familyDoc.guests.map((guest, index) => <RsvpGuestForm
+          previousResponse={responsesPrevious && responsesPrevious[index]}
           key={guest.id}
           guest={guest}
           onChange={(guestResponse) => onChangedGuestResponse(guest.id, guestResponse)}
@@ -82,21 +91,35 @@ const transportLocationOptions = [
 ]
 
 interface RsvpGuestFormProps {
+  previousResponse: GuestResponseDoc | undefined;
   guest: FamilyGuestDoc;
   onChange: (value: GuestResponseDoc) => any;
 }
 
-function RsvpGuestForm({ guest, onChange }: RsvpGuestFormProps) {
+type YesOrNo = 'yes' | 'no';
+
+function RsvpGuestForm({ guest, onChange, previousResponse }: RsvpGuestFormProps) {
   const [dietOption, setDietOption] = React.useState('none');
   const [extraDietInfo, setExtraDietOption] = React.useState('');
-  const [areYouComingResult, setAreYouComingResult] = React.useState<string>();
-  const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState<string>('no');
+  const [areYouComingResult, setAreYouComingResult] = React.useState<YesOrNo>();
+  const [wouldYouLikeTransportResult, setWouldYouLikeTransportResult] = React.useState<YesOrNo>('no');
   const [transportLocationResult, setTransportLocationResult] = React.useState('');
 
   const isComing = areYouComingResult === 'yes';
   const isDietNone = dietOption === 'none';
   const isTransportNone = wouldYouLikeTransportResult === 'no';
   const isTransportRequired = !isTransportNone;
+
+  React.useEffect(() => {
+    if (!previousResponse) {
+      return;
+    }
+    setDietOption(previousResponse.diet_option);
+    setExtraDietOption(previousResponse.diet_extra_info);
+    setAreYouComingResult(previousResponse.is_coming ? 'yes' : 'no');
+    setWouldYouLikeTransportResult(previousResponse.transport_required ? 'yes' : 'no');
+    setTransportLocationResult(previousResponse.transport_location);
+  }, [previousResponse]);
 
   React.useEffect(() => {
     if (areYouComingResult == null) {
@@ -117,12 +140,12 @@ function RsvpGuestForm({ guest, onChange }: RsvpGuestFormProps) {
   const buttonToggleLabel = <p>Is <span className="font-bold">{guestName}</span> coming?</p>;
 
   return <div className="card shadow p-3 bg-white">
-    <ButtonToggleField label={buttonToggleLabel} options={areYouComingOptions} onChange={setAreYouComingResult} />
+    <ButtonToggleField defaultValue={previousResponse && (previousResponse.is_coming ? 'yes' : 'no')} label={buttonToggleLabel} options={areYouComingOptions} onChange={setAreYouComingResult} />
     {isComing && <>
-      <SelectField label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
-      {!isDietNone && <TextAreaField label="Any extra dietary information?" onChange={setExtraDietOption} />}
-      <SelectField initialValue="no" label="Would you be interested in transport?" options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
-      {!isTransportNone && <SelectField label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
+      <SelectField defaultValue={previousResponse?.diet_option} label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
+      {!isDietNone && <TextAreaField defaultValue={previousResponse?.diet_extra_info} label="Any extra dietary information?" onChange={setExtraDietOption} />}
+      <SelectField defaultValue={previousResponse?.transport_required ? 'yes' : 'no'} label="Would you be interested in transport?" options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
+      {!isTransportNone && <SelectField defaultValue={previousResponse?.transport_location} label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
     </>}
   </div>
 }

@@ -3,7 +3,7 @@ import { LoadingScreen } from '../shared/loading-screen';
 import { ErrorScreen } from '../shared/error-screen';
 import { useRouter } from 'next/router';
 import { DB } from '../utils/init-firebase';
-import { Family } from 'shared/guest.model';
+import { Family, FamilyResponseDoc } from 'shared/guest.model';
 import Router from 'next/router'
 import { RsvpForm } from 'shared/rsvp-form';
 import { TickAnimated } from 'shared/tick-animated';
@@ -12,6 +12,7 @@ type StatusString = 'loading' | 'error' | 'loaded' | 'submitting';
 
 export default function Page() {
   const [familyDoc, setFamilyDoc] = React.useState<Family>();
+  const [familyPreviousResponse, setFamilyPreviousResponse] = React.useState<FamilyResponseDoc>();
   const [status, setStatus] = React.useState<StatusString>('loading');
   const [statusDetail, setStatusDetail] = React.useState('loading');
   const [familyId, setFamilyId] = React.useState<string>();
@@ -44,8 +45,23 @@ export default function Page() {
       .catch(err => setStatus(err.toString()))
   }, [familyId])
 
-  const onSubmit = async (result) => {
+  React.useEffect(() => {
+    if (!familyId) {
+      return;
+    }
+    DB.collection('family-responses').doc(familyId).get()
+      .then(res => {
+        console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), familyId });
+        if (res.exists) {
+          setFamilyPreviousResponse(res.data() as FamilyResponseDoc);
+        }
+      })
+      .catch(err => setStatus(err.toString()))
+  }, [familyId])
+
+  const onSubmit = async (result: FamilyResponseDoc) => {
     setStatus('submitting');
+    result.id = familyId;
     console.log('updating response: ', { result, familyId });
     DB.collection('family-responses').doc(familyId).set(result, { merge: true });
     setTimeout(() => {
@@ -76,7 +92,7 @@ export default function Page() {
       <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
         <p className="guest">Dear {familyName}</p>
         <p className="eventannouncement">You're invited to the wedding of Brij Daniel and Miranda Green</p>
-        <RsvpForm onSubmit={onSubmit} familyDoc={familyDoc} />
+        <RsvpForm onSubmit={onSubmit} familyDoc={familyDoc} previousResponse={familyPreviousResponse} />
       </div>
     </div>
   )
