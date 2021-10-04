@@ -12,11 +12,12 @@ export function Invitation({ family_name, id }: InvitationProps) {
   const height = '800px';
 
   return <div className="page-break-avoid bg-gray-200 bg-flowers border" style={{width, height}}>
-    <div className="transform -skew-y-3 my-8 font-pinyon-script my-20 text-center">
-      <div className="text-4xl">{family_name}</div>
-      <div className="text-2xl">Please join us to celebrate the wedding of</div>
+    <div className="transform my-8 font-pinyon-script text-center">
+      <div className="text-7xl">{family_name}</div>
+      <div className="font-serif flex flex-col gap-3 items-start mr-12">
+        <p className="">Please join us to celebrate the wedding of</p>    
     </div>
-    
+    </div>
     <div>
       <InviteCore />
     </div>
