@@ -140,11 +140,11 @@ function RsvpGuestForm({ guest, onChange, previousResponse }: RsvpGuestFormProps
   const buttonToggleLabel = <p>Is <span className="font-bold">{guestName}</span> coming?</p>;
 
   return <div className="card shadow p-3 bg-white">
-    <ButtonToggleField defaultValue={previousResponse && (previousResponse.is_coming ? 'yes' : 'no')} label={buttonToggleLabel} options={areYouComingOptions} onChange={setAreYouComingResult} />
+    <ButtonToggleField defaultValue={previousResponse && (previousResponse.is_coming ? 'yes' : 'no')} label={buttonToggleLabel} options={areYouComingOptions} onChange={val => setAreYouComingResult(val as YesOrNo)} />
     {isComing && <>
       <SelectField defaultValue={previousResponse?.diet_option} label="Dietary Requirements?" options={dietaryOptions} onChange={setDietOption} />
       {!isDietNone && <TextAreaField defaultValue={previousResponse?.diet_extra_info} label="Any extra dietary information?" onChange={setExtraDietOption} />}
-      <SelectField defaultValue={previousResponse?.transport_required ? 'yes' : 'no'} label="Would you be interested in transport?" options={wouldYouLikeTransportOptions} onChange={setWouldYouLikeTransportResult} />
+      <SelectField defaultValue={previousResponse?.transport_required ? 'yes' : 'no'} label="Would you be interested in transport?" options={wouldYouLikeTransportOptions} onChange={val => setWouldYouLikeTransportResult(val as YesOrNo)} />
       {!isTransportNone && <SelectField defaultValue={previousResponse?.transport_location} label="Where from?" options={transportLocationOptions} onChange={setTransportLocationResult} />}
     </>}
   </div>
