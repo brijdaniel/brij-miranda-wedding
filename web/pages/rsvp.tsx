@@ -91,8 +91,8 @@ export default function Page() {
     <div className="w-full min-h-screen bg-base-200 bg-flowers" >
       <div className="mx-auto max-w-md px-3 flex flex-col align-center text-center">
         <p className="guest">{familyName}</p>
-        <p className="font-serif">Please join us to celebrate the wedding of</p>
-        <p className="font-serif">Brij Daniel and Miranda Green</p>
+        <p className="eventannouncement">Please join us to celebrate the wedding of</p>
+        <p className="eventannouncement">Brij Daniel and Miranda Green</p>
         <RsvpForm onSubmit={onSubmit} familyDoc={familyDoc} previousResponse={familyPreviousResponse} />
       </div>
     </div>
