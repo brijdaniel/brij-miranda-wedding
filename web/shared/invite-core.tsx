@@ -13,7 +13,7 @@ export function InviteCore() {
             <p className="">4pm Arrival for a 4:30pm Ceremony</p>
             <p className="">Reception to follow</p>
             <p className="">Maximilians, Verdun SA</p>
-            <p className="">RSVP by: 5th January, 2022</p>
+            <p className="">RSVP by: January 5th, 2022</p>
         </div>
         </div>
     </div>
