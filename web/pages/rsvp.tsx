@@ -66,7 +66,7 @@ export default function Page() {
     DB.collection('family-responses').doc(familyId).set(result, { merge: true });
     setTimeout(() => {
       // making a 1000ms 'sleep' so the gif will display before re-route
-      Router.push('/info');
+      Router.push('/');
     }, 1000);
   }
 
