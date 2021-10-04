@@ -60,7 +60,7 @@ export function RsvpForm(props: RsvpFormProps) {
       }
     </div>
     {allNotComing && <>
-      <h2 className="mt-3">We're sorry to hear that, look forward to seeing you soon :)</h2>
+      <h2 className="mt-3">We're sorry to hear that, thanks for letting us know!</h2>
     </>}
     <button disabled={!isFormValid} onClick={onClickedSubmit} className="my-3 btn btn-primary">Send Response</button>
   </div>
@@ -87,7 +87,7 @@ const wouldYouLikeTransportOptions = [
 
 const transportLocationOptions = [
   { label: 'Hahndorf', value: 'Hahndorf' },
-  { label: 'CBD', value: 'CBD' },
+  { label: 'Adelaide CBD', value: 'Adelaide CBD' },
 ]
 
 interface RsvpGuestFormProps {
