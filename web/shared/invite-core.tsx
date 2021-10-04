@@ -9,8 +9,9 @@ export function InviteCore() {
         </div>
         <div className="w-full flex flex-col items-end mt-24">
         <div className="font-serif flex flex-col gap-3 items-start mr-12">
-            <p className="text-2xl">5th March, 2022</p>
-            <p className="">4:30pm Ceremony, Reception to follow</p>
+            <p className="text-2xl">March 5th, 2022</p>
+            <p className="">4pm Arrival for a 4:30pm Ceremony</p>
+            <p className="">Reception to follow</p>
             <p className="">Maximilians, Verdun SA</p>
             <p className="">RSVP by: 5th January, 2022</p>
         </div>
