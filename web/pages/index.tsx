@@ -17,6 +17,7 @@ export default function Page() {
       <div className="w-full flex flex-col items-end">
         <div className="font-serif flex flex-col items-center mr-12 gap-3">
           <p className="">15 Onkaparinga Valley Rd, Verdun SA 5245</p>
+          <p className="">Bus transportation will be available, please let us know your preferences in your RSVP!</p>
           <p className="">If you have any questions, or would like recommendations for accomodation, please contact Miranda on 0437090088</p>
           <p className="">Our Wedding is an 18+ event</p>
           <p className="">Thank you for your understanding</p>
