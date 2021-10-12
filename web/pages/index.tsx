@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { InviteCore } from "../shared/invite-core";
 import { InviteDetails } from 'shared/invite-details';
 
