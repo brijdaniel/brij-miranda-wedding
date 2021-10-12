@@ -20,6 +20,8 @@ export default function Page() {
           <Invitation
             id={guest.id}
             family_name={guest.family_name}
+            customGreeting={guest.custom_greeting}
+            extraDetails={guest.extra_details}
           />
         </div>;
       })}

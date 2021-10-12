@@ -42,7 +42,12 @@ export default function Page() {
     if (status === 'loaded') {
       const familyName = guestDoc?.family_name;
       return <>
-          <Invitation family_name={familyName} id={guestId} />
+          <Invitation 
+            family_name={familyName} 
+            id={guestId} 
+            customGreeting={guestDoc.custom_greeting}
+            extraDetails={guestDoc.extra_details}
+          />
       </>;
     }
     return <LoadingScreen label="Loading invitation information..." />

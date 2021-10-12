@@ -26,6 +26,9 @@ export interface Family {
     address: string;
     family_name: string;
     guests: FamilyGuestDoc[];
+
+    custom_greeting?: string;
+    extra_details?: string;
 }
 
 export interface FamilyResponseDoc {

@@ -12,6 +12,8 @@ interface FamilyFormProps {
 export function FamilyForm(props: FamilyFormProps) {
   const initialValue = props.initialValue;
 
+  const [extraDetails, setExtraDetails] = React.useState<string>(initialValue?.extra_details);
+  const [customGreeting, setCustomGreeting] = React.useState<string>(initialValue?.custom_greeting);
   const [familyName, setFamilyName] = React.useState<string>(initialValue?.family_name);
   const [address, setAddress] = React.useState<string>(initialValue?.address);
   const [guests, setGuests] = React.useState<FamilyGuestDoc[]>(initialValue?.guests);
@@ -20,7 +22,9 @@ export function FamilyForm(props: FamilyFormProps) {
     const family: Family = {
       family_name: familyName,
       address: address,
-      guests: guests
+      guests: guests,
+      extra_details: extraDetails || '',
+      custom_greeting: customGreeting || '',
     }
     console.log('form submitting', { family });
     props.onSubmit(family);
@@ -38,6 +42,9 @@ export function FamilyForm(props: FamilyFormProps) {
       <TextAreaField defaultValue={initialValue?.address} label="Address" onChange={setAddress} />
 
       <Guests defaultValue={initialValue?.guests} onChange={setGuests} />
+
+      <TextField defaultValue={initialValue?.custom_greeting} label="Custom Greeting (Optional)" onChange={setCustomGreeting} />
+      <TextAreaField defaultValue={initialValue?.extra_details} label="Extra Details (Optional)" onChange={setExtraDetails} />
 
       <div className="flex gap-2 items-start justify-between mt-5">
         <div className="flex gap-2 items-center">
