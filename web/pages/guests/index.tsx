@@ -84,7 +84,10 @@ export default function Page() {
                 guestsFiltered && guestsFiltered.map((family, i) => {
                   return <tr key={i}>
                     <th>
-                      <p className="font-bold text-xl">{family.family_name || '-'}</p>
+                      <p className="font-bold text-xl flex flex-row items-center gap-1">{family.family_name || '-'}
+                        {family.extra_details && <ToolTip label={"Extra Details: " + family.extra_details}><span>🟢</span></ToolTip>}
+                        {family.custom_greeting && <ToolTip label={"Custom Greeting: " + family.custom_greeting}><span>🔵</span></ToolTip>}
+                      </p>
                       <p className="text-gray-500">{family.address || '-'}</p>
                       <p className="text-gray-300 text-xs italic">{family.id}</p>
                     </th>
