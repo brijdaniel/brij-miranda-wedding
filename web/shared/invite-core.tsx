@@ -7,8 +7,8 @@ export function InviteCore() {
         <p className="font-allison mt-3">{'&'}</p>
         <p className="text-7xl">Miranda</p>
         </div>
-        <div className="w-full flex flex-col items-end mt-24">
-        <div className="font-serif flex flex-col gap-3 items-start mr-12">
+        <div className="w-full flex flex-col items-center mt-24">
+        <div className="font-serif flex flex-col gap-3 items-center">
             <p className="text-2xl">March 5th, 2022</p>
             <p className="">4pm Arrival for a 4:30pm Ceremony</p>
             <p className="">Reception to follow</p>
