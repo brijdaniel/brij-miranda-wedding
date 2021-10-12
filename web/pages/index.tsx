@@ -11,7 +11,7 @@ export default function Page() {
           <p className="">Details</p>
         </div>
       </div>
-      <div className="w-full flex flex-col items-end">
+      <div className="w-full flex flex-col items-center">
         <div className="font-serif flex flex-col items-center gap-3">
           <p className="">15 Onkaparinga Valley Rd, Verdun SA 5245</p>
           <p className="">Bus transportation will be available, please let us know your preferences in your RSVP!</p>
