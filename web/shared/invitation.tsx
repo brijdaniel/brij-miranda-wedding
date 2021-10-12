@@ -1,6 +1,7 @@
 import React from "react";
 import { QrCodeImage } from "./qr-code-image";
 import { InviteCore } from "./invite-core";
+import { InviteDetails } from "./invite-details";
 
 interface InvitationProps {
   family_name: string;
@@ -33,6 +34,9 @@ function InvitationBack({ family_name, id }: InvitationProps) {
   return <div className="page-break-avoid bg-gray-200 bg-flowers border flex flex-col justify-center" style={{ width, height }}>
     <div className="transform mt-16 mb-4 font-pinyon-script text-center flex flex-col items-center gap-8">
       <div className="text-3xl">{family_name}</div>
+    </div>
+    <div className="mx-10">
+      <InviteDetails />
     </div>
     <div className="items-center flex flex-col w-full mt-10 gap-2 mb-10">
       <div className="text-xs">↓↓↓ RSVP link ↓↓↓</div>
