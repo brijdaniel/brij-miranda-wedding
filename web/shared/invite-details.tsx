@@ -2,7 +2,7 @@ export function InviteDetails() {
   const PHONE = '0437090088';
   return <>
     <div className="transform text-6xl font-pinyon-script flex flex-col items-center">
-      <div className="items-end mt-20">
+      <div className="items-end">
         <p className="">Details</p>
       </div>
     </div>
