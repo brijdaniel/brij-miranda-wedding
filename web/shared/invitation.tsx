@@ -38,8 +38,8 @@ function InvitationBack({ family_name, id, extraDetails }: InvitationProps) {
   return <div className="page-break-avoid bg-gray-200 bg-flowers border flex flex-col justify-center" style={{ width, height }}>
     <div className="transform mt-16 mb-4 text-center flex flex-col items-center gap-8">
       <div className="text-3xl font-pinyon-script">{family_name}</div>
-      {extraDetails && <div className="text-center flex flex-col items-center gap-8">
-        <div className="mx-10 flex flex-col whitespace-pre-line font-serif">{extraDetails}</div>
+      {extraDetails && <div className="text-2xl text-center flex flex-col items-center gap-8">
+        <div className="text-2xl mx-10 flex flex-col whitespace-pre-line font-serif">{extraDetails}</div>
       </div>}
     </div>
     <div className="mx-10">
