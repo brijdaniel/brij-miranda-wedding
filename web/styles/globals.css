@@ -58,6 +58,9 @@ a {
 .page-break-avoid {
   page-break-inside: avoid;
 }
+.page-break-after {
+  page-break-after: always;
+}
 
 /* CHECK MARK ANIMATION */
 

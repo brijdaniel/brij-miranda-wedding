@@ -16,14 +16,13 @@ export default function Page() {
   return (
     <div className="relative">
       {guests && guests.map((guest) => {
-        return <div key={guest.id} className="relative page-break-avoid inline-block">
-          <Invitation
+        return <Invitation
+            key={guest.id}
             id={guest.id}
             family_name={guest.family_name}
             customGreeting={guest.custom_greeting}
             extraDetails={guest.extra_details}
           />
-        </div>;
       })}
     </div>
   )

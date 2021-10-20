@@ -10,7 +10,7 @@ interface InvitationProps {
   extraDetails: string;
 }
 const width = '148mm';
-const height = '210mm';
+const height = '209.8mm';
 
 export function Invitation(props: InvitationProps) {
   return <>
@@ -22,7 +22,7 @@ export function Invitation(props: InvitationProps) {
 const DEFAULT_GREETING = 'Please join us to celebrate the wedding of';
 
 function InvitationFront({ family_name, customGreeting }: InvitationProps) {
-  return <div className="page-break-avoid bg-gray-200 bg-flowers border flex flex-col justify-center" style={{ width, height }}>
+  return <div className="page-break-avoid page-break-after bg-gray-200 bg-flowers flex flex-col justify-center" style={{ width, height }}>
     <div className="transform mb-16 font-pinyon-script text-center flex flex-col items-center gap-8">
       <div className="text-5xl">{family_name}</div>
       <p className="font-serif">{customGreeting || DEFAULT_GREETING}</p>
@@ -35,7 +35,7 @@ function InvitationFront({ family_name, customGreeting }: InvitationProps) {
 
 function InvitationBack({ family_name, id, extraDetails }: InvitationProps) {
   const isLocalHost = location.origin.includes('localhost');
-  return <div className="page-break-avoid bg-gray-200 bg-flowers border flex flex-col justify-center" style={{ width, height }}>
+  return <div className="page-break-avoid page-break-after bg-gray-200 bg-flowers flex flex-col justify-center" style={{ width, height }}>
     <div className="transform mt-16 mb-4 text-center flex flex-col items-center gap-8">
       <div className="text-3xl font-pinyon-script">{family_name}</div>
       {extraDetails && <div className="text-2xl text-center flex flex-col items-center gap-8">
