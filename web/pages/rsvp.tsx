@@ -2,7 +2,7 @@ import React from 'react';
 import { LoadingScreen } from '../shared/loading-screen';
 import { ErrorScreen } from '../shared/error-screen';
 import { useRouter } from 'next/router';
-import { DB } from '../utils/init-firebase';
+import { getDocument, setDocument } from '../utils/firebase-wrapper';
 import { Family, FamilyResponseDoc } from 'shared/guest.model';
 import Router from 'next/router'
 import { RsvpForm } from 'shared/rsvp-form';
@@ -31,7 +31,7 @@ export default function Page() {
     if (!familyId) {
       return;
     }
-    DB.collection('families').doc(familyId).get()
+    getDocument('families', familyId)
       .then(res => {
         console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), familyId });
         if (!res.exists) {
@@ -49,7 +49,7 @@ export default function Page() {
     if (!familyId) {
       return;
     }
-    DB.collection('family-responses').doc(familyId).get()
+    getDocument('family-responses', familyId)
       .then(res => {
         console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), familyId });
         if (res.exists) {
@@ -63,7 +63,7 @@ export default function Page() {
     setStatus('submitting');
     result.id = familyId;
     console.log('updating response: ', { result, familyId });
-    DB.collection('family-responses').doc(familyId).set(result, { merge: true });
+    setDocument(['family-responses', familyId], result);
     setTimeout(() => {
       // making a 1000ms 'sleep' so the gif will display before re-route
       Router.push('/');

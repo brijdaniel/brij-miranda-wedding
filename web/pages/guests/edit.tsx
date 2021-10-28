@@ -1,5 +1,5 @@
 import React from 'react';
-import { DB } from '../../utils/init-firebase';
+import { getDocument, removeDocument, setDocument } from '../../utils/firebase-wrapper';
 import { Header } from '../../shared/header';
 import { LoadingScreen } from '../../shared/loading-screen';
 import { Family } from 'shared/guest.model';
@@ -26,7 +26,7 @@ export default function Page() {
             return;
         }
         async function Get() {
-            const res = await DB.collection('families').doc(familyId).get()
+            const res = await getDocument('families', familyId);
             const familyDoc = res.data() as Family;
             console.log('from db', {familyDoc});
             setFamilyDoc(familyDoc);
@@ -38,7 +38,7 @@ export default function Page() {
     const onSubmit = async (value: Family) => {
         console.log('submitting to db', {value});
         setSaving(true);
-        await DB.collection('families').doc(familyId).set(value, { merge: true });
+        await setDocument(['families', familyId], value);
         router.push('/guests');
     };
 
@@ -48,7 +48,7 @@ export default function Page() {
 
     const onDelete = async () => {
         setSaving(true);
-        await DB.collection('families').doc(familyId).delete();
+        await removeDocument('families', familyId);
         router.push('/guests');
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { DB } from '../../utils/init-firebase';
+import { getCollection } from '../../utils/firebase-wrapper';
 import { Header } from '../../shared/header';
 import { Family, FamilyGuestDoc, FamilyResponseDoc, GuestResponseDoc } from 'shared/guest.model';
 import { TextField } from 'shared/fields';
@@ -16,7 +16,7 @@ export default function Page() {
   const [guestResponseMap, setGuestResponseMap] = React.useState<GuestResponseMap>({});
 
   React.useEffect(() => {
-    DB.collection('families').get()
+    getCollection('families')
       .then(res => res.docs.map(d => ({ ...d.data(), id: d.id } as Family)))
       .then(dataArr => setGuests(dataArr))
       .catch((err) => console.error(err))
@@ -44,7 +44,7 @@ export default function Page() {
       return;
     }
     async function FetchResponses() {
-      const res = await DB.collection('family-responses').get()
+      const res = await getCollection('family-responses');
       const familyResponses = res.docs.map(d => ({ ...d.data(), id: d.id } as FamilyResponseDoc));
       const responsesMap = familyResponses.reduce((a, c) => {
         const familyReponses = c.responses;

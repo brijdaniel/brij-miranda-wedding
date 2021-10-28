@@ -1,5 +1,5 @@
 import React from 'react';
-import { APP } from '../utils/init-firebase';
+import { loginWithEmailPass } from '../utils/firebase-wrapper';
 import { TextField, PasswordField } from './fields';
 import { LoadingScreen } from './loading-screen';
 
@@ -16,7 +16,7 @@ export function LoginForm() {
         }
         try {
             setLoading(true);
-            await APP.auth().signInWithEmailAndPassword(email, password)
+            await loginWithEmailPass(email, password)
             location.reload();
         } catch (error) {
             console.error(error);
