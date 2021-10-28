@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetLoggedInUser } from '../utils/init-firebase';
+import { GetLoggedInUser } from '../utils/firebase-wrapper';
 import { LoadingScreen } from './loading-screen';
 import { LoginForm } from "./login-form";
 

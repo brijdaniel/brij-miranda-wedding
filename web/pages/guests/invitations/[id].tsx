@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Invitation } from "shared/invitation";
-import { DB } from '../../../utils/init-firebase';
+import { getDocument } from '../../../utils/firebase-wrapper';
 import { Family } from 'shared/guest.model';
 import { LoadingScreen } from 'shared/loading-screen';
 
@@ -26,7 +26,7 @@ export default function Page() {
         if (!guestId) {
           return;
         }
-        DB.collection('families').doc(guestId).get()
+        getDocument('families', guestId)
           .then(res => {
             console.log('retrieved guest: ', { res, exists: res.exists, data: res.data(), guestId });
             if (!res.exists) {

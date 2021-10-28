@@ -15,7 +15,7 @@
     "@fontsource/allison": "^4.5.1",
     "@fontsource/pinyon-script": "^4.5.0",
     "daisyui": "^1.14.0",
-    "firebase": "^8.6.2",
+    "firebase": "^9.1.3",
     "next": "11.1.2",
     "qrcode": "^1.4.4",
     "react": "17.0.2",

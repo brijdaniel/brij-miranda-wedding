@@ -1,5 +1,5 @@
 import React from 'react';
-import { DB } from '../../utils/init-firebase';
+import { addDocument } from '../../utils/firebase-wrapper';
 import { Header } from '../../shared/header';
 import { Family } from 'shared/guest.model';
 import { FamilyForm } from 'shared/family-form';
@@ -14,7 +14,7 @@ export default function Page() {
 
     const onSubmit = (family: Family) => {
         console.log('adding family', {family});
-        DB.collection('families').add(family).then(() => {
+        addDocument(['families'], family).then(() => {
             triggerClearForm();
         });
     };

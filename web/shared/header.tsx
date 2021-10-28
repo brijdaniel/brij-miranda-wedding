@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { APP } from '../utils/init-firebase';
+import { logout } from '../utils/firebase-wrapper';
 
 export function Header({ links }) {
     const onClickLogout = () => {
-        APP.auth().signOut().then(() => {
+        logout().then(() => {
             location.reload()
         });
     }
