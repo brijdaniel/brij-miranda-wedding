@@ -1,6 +1,12 @@
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
 
+/**
+ * This is a generic CSV download button,
+ * @param filename is the name of the downloaded CSV
+ * @param items is the input data (array of JSON objects)
+ * @param getRow is the function that transforms a row of data -> to a CSV row
+ */
 export function CSVDownloadButton<T>(props: {
   filename: string,
   items: T[],
