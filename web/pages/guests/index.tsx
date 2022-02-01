@@ -10,11 +10,19 @@ type GuestResponseMap = {
   [guestId: string]: GuestResponseDoc;
 }
 
+type GuestFlattenedRow = {
+  guestId: string;
+  guest: FamilyGuestDoc;
+  response: GuestResponseDoc;
+  family: Family;
+}
+
 export default function Page() {
   const [familyFilterText, setGuestsFilterText] = React.useState<string>('');
   const [families, setGuests] = React.useState<Family[]>(null);
   const [familiesFiltered, setGuestsFiltered] = React.useState<Family[]>(null);
   const [guestResponseMap, setGuestResponseMap] = React.useState<GuestResponseMap>({});
+  const [guestsFlattened, setGuestsFlattened] = React.useState<GuestFlattenedRow[]>(null)
 
   React.useEffect(() => {
     DB.collection('families').get()
@@ -41,19 +49,38 @@ export default function Page() {
   }, [families, familyFilterText])
 
   React.useEffect(() => {
+    setGuestsFlattened(null);
     if (!families) {
       return;
     }
     async function FetchResponses() {
       const res = await DB.collection('family-responses').get()
       const familyResponses = res.docs.map(d => ({ ...d.data(), id: d.id } as FamilyResponseDoc));
+      
+      const rows: GuestFlattenedRow[] = [];
+      const familyMap: {[familyId: string]: Family} = {};
+      const guestMap: {[guestId: string]: FamilyGuestDoc} = {};
+      families.map((family) => {
+        familyMap[family.id] = family;
+        family.guests.map(guest => {
+          guestMap[guest.id] = guest;
+        })
+      })
+
       const responsesMap = familyResponses.reduce((a, c) => {
         const familyReponses = c.responses;
         familyReponses?.map((guestResponse) => {
+          rows.push({
+            guestId: guestResponse.id,
+            guest: guestMap[guestResponse.id], 
+            response: guestResponse,
+            family: familyMap[c.id],
+          });
           a[guestResponse.id] = guestResponse;
         });
         return a;
       }, {} as GuestResponseMap);
+      setGuestsFlattened(rows);
       setGuestResponseMap(responsesMap);
       console.log({ responsesMap });
     }
@@ -72,11 +99,13 @@ export default function Page() {
             <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Family</a></Link>
             <Link href="/guests/invitations"><a className="btn btn-primary mt-5">All Invitations</a></Link>
             <CSVDownloadButton 
-              items={families}
+              items={guestsFlattened}
               getRow={(item) => {
                 return {
-                  name: item.family_name || "-",
-                  is_coming: guestResponseMap[item.id]?.is_coming ? 'YES' : 'NO',
+                  family_name: item.family.family_name,
+                  guest_first_name: item.guest.first_name,
+                  guest_last_name: item.guest.last_name,
+                  is_coming: guestResponseMap[item.guestId]?.is_coming ? 'YES' : 'NO',
                 }
               }}
               filename='Guests' 
