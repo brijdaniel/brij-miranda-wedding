@@ -4,15 +4,16 @@ import { DB } from '../../utils/init-firebase';
 import { Header } from '../../shared/header';
 import { Family, FamilyGuestDoc, FamilyResponseDoc, GuestResponseDoc } from 'shared/guest.model';
 import { TextField } from 'shared/fields';
+import { CSVDownloadButton } from 'shared/csv-download-button';
 
 type GuestResponseMap = {
   [guestId: string]: GuestResponseDoc;
 }
 
 export default function Page() {
-  const [guestsFilterText, setGuestsFilterText] = React.useState<string>('');
-  const [guests, setGuests] = React.useState<Family[]>(null);
-  const [guestsFiltered, setGuestsFiltered] = React.useState<Family[]>(null);
+  const [familyFilterText, setGuestsFilterText] = React.useState<string>('');
+  const [families, setGuests] = React.useState<Family[]>(null);
+  const [familiesFiltered, setGuestsFiltered] = React.useState<Family[]>(null);
   const [guestResponseMap, setGuestResponseMap] = React.useState<GuestResponseMap>({});
 
   React.useEffect(() => {
@@ -23,24 +24,24 @@ export default function Page() {
   }, []);
 
   React.useEffect(() => {
-    if (!guests) {
+    if (!families) {
       return;
     }
-    if (!guestsFilterText) {
-      setGuestsFiltered([...guests]);
+    if (!familyFilterText) {
+      setGuestsFiltered([...families]);
     }
-    const searchStrLower = guestsFilterText.toLowerCase();
+    const searchStrLower = familyFilterText.toLowerCase();
     function IsMatch(f: Family) {
       const guestsStr = f.guests.map(g => `${g.first_name} ${g.last_name}`).join(' | ');
       const searchStr = `${f.address} | ${f.family_name} | ${guestsStr}`;
       return searchStr.toLowerCase().includes(searchStrLower);
     }
-    const filtered = guests.filter(f => IsMatch(f));
+    const filtered = families.filter(f => IsMatch(f));
     setGuestsFiltered(filtered);
-  }, [guests, guestsFilterText])
+  }, [families, familyFilterText])
 
   React.useEffect(() => {
-    if (!guests) {
+    if (!families) {
       return;
     }
     async function FetchResponses() {
@@ -57,7 +58,7 @@ export default function Page() {
       console.log({ responsesMap });
     }
     FetchResponses().catch((err) => console.error(err));
-  }, [guests]);
+  }, [families]);
 
   return (
     <>
@@ -70,6 +71,16 @@ export default function Page() {
             </div>
             <Link href="/guests/add"><a className="btn btn-primary mt-5">Add Family</a></Link>
             <Link href="/guests/invitations"><a className="btn btn-primary mt-5">All Invitations</a></Link>
+            <CSVDownloadButton 
+              items={families}
+              getRow={(item) => {
+                return {
+                  name: item.family_name || "-",
+                  is_coming: guestResponseMap[item.id]?.is_coming ? 'YES' : 'NO',
+                }
+              }}
+              filename='Guests' 
+            />
           </div>
           <table className="table w-full table-compact mt-4">
             <thead>
@@ -81,20 +92,20 @@ export default function Page() {
             </thead>
             <tbody>
               {
-                guestsFiltered && guestsFiltered.map((family, i) => {
+                familiesFiltered && familiesFiltered.map((family, i) => {
                   return <tr key={i}>
                     <th>
-                      <p className="font-bold text-xl flex flex-row items-center gap-1">{family.family_name || '-'}
+                      <div className="font-bold text-xl flex flex-row items-center gap-1">{family.family_name || '-'}
                         {family.extra_details && <ToolTip label={"Extra Details: " + family.extra_details}><span>🟢</span></ToolTip>}
                         {family.custom_greeting && <ToolTip label={"Custom Greeting: " + family.custom_greeting}><span>🔵</span></ToolTip>}
-                      </p>
+                      </div>
                       <p className="text-gray-500">{family.address || '-'}</p>
                       <p className="text-gray-300 text-xs italic">{family.id}</p>
                     </th>
                     <th>
                       <div className="flex flex-col gap-2">
                         {family.guests && family.guests.map((guest, i) => {
-                          console.log({map: guestResponseMap[guest.id], id: guest.id})
+                          // console.log({response: guestResponseMap[guest.id], id: guest.id})
                           return <GuestRow 
                             key={guest.id} 
                             guestNumber={i} 
