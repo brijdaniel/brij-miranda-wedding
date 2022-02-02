@@ -107,7 +107,8 @@ export default function Page() {
                   guest_last_name: item.guest.last_name,
                   is_coming: guestResponseMap[item.guestId]?.is_coming ? 'YES' : 'NO',
                   dietary: guestResponseMap[item.guestId]?.diet_extra_info,
-                  transport: guestResponseMap[item.guestId]?.transport_location, 
+                  transport_required: guestResponseMap[item.guestId]?.transport_required ? 'YES' : 'NO', 
+                  transport: guestResponseMap[item.guestId]?.transport_location,
                 }
               }}
               filename='Guests' 
