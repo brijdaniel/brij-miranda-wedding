@@ -106,7 +106,8 @@ export default function Page() {
                   guest_first_name: item.guest.first_name,
                   guest_last_name: item.guest.last_name,
                   is_coming: guestResponseMap[item.guestId]?.is_coming ? 'YES' : 'NO',
-                  dietary: guestResponseMap[item.guestId]?.diet_extra_info,
+                  dietary: guestResponseMap[item.guestId]?.diet_option,
+                  dietary_extra: guestResponseMap[item.guestId]?.diet_extra_info,
                   transport: guestResponseMap[item.guestId]?.transport_location, 
                 }
               }}

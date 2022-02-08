@@ -21,7 +21,7 @@ export function CSVDownloadButton<T>(props: {
     })
     const blob = new Blob([csvString], {type: "text/plain;charset=utf-8"});
     console.log({inputItems: props.items, mappedData, csvString, blob})
-    saveAs(blob, `${props.filename}-(${mappedData.length} items).txt`);
+    saveAs(blob, `${props.filename}-(${mappedData.length} items).csv`);
   }
 
   return <button disabled={disabled} className="btn" onClick={onClickBtn}>
