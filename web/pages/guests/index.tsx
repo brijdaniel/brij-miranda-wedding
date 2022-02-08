@@ -106,9 +106,15 @@ export default function Page() {
                   guest_first_name: item.guest.first_name,
                   guest_last_name: item.guest.last_name,
                   is_coming: guestResponseMap[item.guestId]?.is_coming ? 'YES' : 'NO',
+<<<<<<< HEAD
                   dietary: guestResponseMap[item.guestId]?.diet_option,
                   dietary_extra: guestResponseMap[item.guestId]?.diet_extra_info,
                   transport: guestResponseMap[item.guestId]?.transport_location, 
+=======
+                  dietary: guestResponseMap[item.guestId]?.diet_extra_info,
+                  transport_required: guestResponseMap[item.guestId]?.transport_required ? 'YES' : 'NO', 
+                  transport: guestResponseMap[item.guestId]?.transport_location,
+>>>>>>> e57b2a93cb0383f5934d16aca259cba3f4ad2af1
                 }
               }}
               filename='Guests' 
